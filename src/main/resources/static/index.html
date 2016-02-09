@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>honiara</title>
+    <script src="sockjs-0.3.4.js"></script>
+    <script src="stomp.js"></script>
+    <script type="text/javascript">
+        var stompClient = null;
+        var id = null;
+        var user = null;
+
+        function setConnected(connected) {
+            
+        }
+
+        function connect() {        	
+            var socket = new SockJS('/honiara');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function(frame) {
+                setConnected(true);
+                console.log('Connected: ' + frame);
+                user = frame.headers['user-name'];
+                id = guid();
+                stompClient.subscribe('/topic/convos/*', function(message){
+                	showMessage2(JSON.parse(message.body));
+                }, { id: id });
+                console.log('ID: ' + id);
+            });
+        }
+        
+        function guid() {
+       	  function s4() {
+       	    return Math.floor((1 + Math.random()) * 0x10000)
+       	      .toString(16)
+       	      .substring(1);
+       	  }
+       	  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+       	    s4() + '-' + s4() + s4() + s4();
+       	}
+
+        function disconnect() {
+            if (stompClient != null) {
+                stompClient.disconnect();
+            }
+            setConnected(false);
+            console.log("Disconnected");
+        }
+
+        function sendContent() {
+            var content = document.getElementById('content').value;
+            document.getElementById('content').value = '';
+            if (content.length > 0) {
+            	showMessage(content);
+            	stompClient.send("/app/honiara/convos/1", {}, JSON.stringify({ 'content': content }));
+            }
+        }
+
+        function showMessage(message) {
+            var response = document.getElementById('response');
+            response.appendChild(document.createTextNode(message));
+        }
+        
+        function showMessage2(message) {
+        	if (message.sender == user) return;
+        	
+            var response = document.getElementById('response2');
+            response.appendChild(document.createTextNode(message.content));
+        }
+    </script>
+</head>
+<body onload="connect()">
+<div>
+    <div id="conversationDiv">
+        <label>Chat here:</label><input type="text" id="content" onkeydown="sendContent();" onkeyup="sendContent();"/>
+        <button id="sendContent" onclick="sendContent();">Send</button>
+        <br /><div id="stream1"><label>You:</label><p id="response"></p></div>
+        <div id="stream2" align="right"><label id="stream2-label">Friend:</label><p id="response2"></p></div>
+    </div>
+</div>
+</body>
+</html>
