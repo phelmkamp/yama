@@ -3,7 +3,7 @@ package com.ankara.honiara.api.representations;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Message {
+public class Message /*extends BaseRep*/ {
 
 	private String sender;
 	private String content;

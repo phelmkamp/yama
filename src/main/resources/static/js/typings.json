@@ -1,0 +1,6 @@
+{
+  "ambientDependencies": {
+    "react": "github:DefinitelyTyped/DefinitelyTyped/react/react.d.ts#f407264835650f5f38d4bb2c515a79e7a835916b",
+    "react-bootstrap": "github:DefinitelyTyped/DefinitelyTyped/react-bootstrap/react-bootstrap.d.ts#3f0168b531ebb9248db49550856713fedc81c714"
+  }
+}

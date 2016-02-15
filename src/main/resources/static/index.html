@@ -1,50 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>honiara</title>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
-<link rel="stylesheet" href="css/bootstrap-theme.min.css">
-</head>
-<body>
-<nav id="myNavbar" class="navbar navbar-default navbar-inverse navbar-static-top" role="navigation">
-	<!-- Brand and toggle get grouped for better mobile display -->
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="" onClick="return false;">honiara</a>
+<!doctype html>
+<html lang="en" data-framework="typescript">
+	<head>
+		<meta charset="utf-8">
+		<title>honiara</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+		<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+
+		<!-- <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap-theme.min.css"> -->
+
+		<!-- <link rel="stylesheet" href="/webjars/todomvc-common/base.css">
+		<link rel="stylesheet" href="css/todomvc-app-css/index.css"> -->
+
+		<!-- Material Design -->
+	  <!-- <link rel="stylesheet" type="text/css" href="/webjars/bootstrap-material-design/css/roboto.min.css">
+	  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
+		<link rel="stylesheet" type="text/css" href="/webjars/bootstrap-material-design/css/ripples.min.css">
+		<link rel="stylesheet" type="text/css" href="/webjars/bootstrap-material-design/css/material.min.css" /> -->
+	</head>
+	<body style="padding-top: 70px;">
+		<nav class="navbar navbar-default navbar-fixed-top">
+		  <div class="container">
+				<div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" aria-expanded="false">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href="#">honiara</a>
+		    </div>
+				<div class="collapse navbar-collapse">
+		      <ul class="nav navbar-nav">
+		        <li><a href="#">logout</a></li>
+					</ul>
+				</div>
+		  </div>
+		</nav>
+		<section class="todoapp"></section>
+
+		<div class="modal fade" id="userDialog" role="dialog">
+		  <div class="modal-dialog">
+
+		    <!-- Modal content-->
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title">who ya gonna call?</h4>
+		      </div>
+		      <div class="modal-body usersview"></div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">nevermind</button>
+		      </div>
+		    </div>
+
+		  </div>
 		</div>
-		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse" id="navbarCollapse">
-			<ul class="nav navbar-nav">
-				<li class="active"><a href="" onClick="return false;"><span class="glyphicon glyphicon-home"></span> home</a></li>
-				<li><a href="chat.html"><span class="glyphicon glyphicon-pencil"></span> chat</a></li>
-				<li><a href="" onClick="return false;"><span class="glyphicon glyphicon-globe"></span> convos <span class="badge">3</span></a></li>
-				<li><a href="" onClick="return false;"><span class="glyphicon glyphicon-user"></span> users <span class="badge">25</span></a></li>
-			</ul>
-		</div>
-	</div>
-</nav>
-<div class="container">
-	<div class="jumbotron">
-		<h1>welcome to honiara<br /><small>the decentralized social network</small></h1>
-	</div>
-	<hr>
-	<div class="row">
-		<div class="col-xs-12">
-			<footer>
-				<p>&copy; copyright 2016 phil helmkamp</p>
-			</footer>
-		</div>
-	</div>
-</div>
-<script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
-</body>
+
+		<script type="text/javascript" src="/webjars/react/react-with-addons.min.js"></script>
+		<script type="text/javascript" src="/webjars/classnames/2.2.0/index.js"></script>
+		<script type="text/javascript" src="/webjars/director/build/director.js"></script>
+
+		<script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- <script type="text/javascript" src="/webjars/todomvc-common/base.js"></script> -->
+
+		<script type="text/javascript" src="/webjars/sockjs-client/sockjs.min.js"></script>
+		<script type="text/javascript" src="/webjars/stomp-websocket/stomp.min.js"></script>
+
+		<!-- <script type="text/javascript" src="/webjars/bootstrap-material-design/material.min.js"></script> -->
+
+		<script type="text/javascript" src="js/bundle.js"></script>
+	</body>
 </html>
