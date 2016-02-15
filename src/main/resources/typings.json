@@ -1,0 +1,7 @@
+{
+  "ambientDependencies": {
+    "classnames": "github:DefinitelyTyped/DefinitelyTyped/classnames/classnames.d.ts#8287192198a14bcb31533afe381aa24ac7eed4c6",
+    "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts#fab0b336b0414fac23963bde83f7d7077f6cf14c",
+    "react-global": "github:DefinitelyTyped/DefinitelyTyped/react/react-global-0.13.3.d.ts#49f853d9dc71a5647175d7bfd62aa7030e92b39f"
+  }
+}

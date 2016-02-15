@@ -28,18 +28,21 @@ targetCompatibility = 1.8
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-websocket")
-	compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework:spring-messaging")
-//	compile("org.springframework.boot:spring-boot-starter-data-rest")
-	compile("org.springframework.boot:spring-boot-starter-data-jpa")
-	compile("com.h2database:h2")
+
+	compile 'org.projectlombok:lombok:1.16.6'
 	
 	compile 'org.webjars:webjars-locator'
-	compile 'org.webjars:angularjs:1.4.3'
-	compile 'org.webjars:jquery:2.1.1'
 	compile 'org.webjars:bootstrap:3.2.0'
-	
-//    testCompile("junit:junit")
+	compile 'org.webjars:sockjs-client:1.0.2'
+	compile 'org.webjars:stomp-websocket:2.3.3'
+	compile 'org.webjars:react:0.13.3'
+	compile 'org.webjars:react-bootstrap:0.28.1'
+	compile 'org.webjars.bower:classnames:2.2.0'
+	compile 'org.webjars.bower:director:1.2.8'
+	compile 'org.webjars.npm:todomvc-common:1.0.2'
+	compile 'org.webjars:bootstrap-material-design:0.3.0'
 }
 
 task wrapper(type: Wrapper) {
