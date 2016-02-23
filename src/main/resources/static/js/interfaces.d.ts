@@ -1,113 +1,96 @@
+interface ICsrf {
+  headerName: string;
+  token: string;
+  parameterName: string;
+}
+
+// main
+interface IMainViewProps {
+  stompClient;
+  thisUser: IUser;
+  csrf: ICsrf;
+}
+
+interface IMainViewState {
+  activeView: number;
+  activeConvo?: IConvo;
+}
+
+// user
 interface IUser {
-  id: string;
-}
-
-interface IConvo {
-  id: string,
-  users: Array<IUser>;
-}
-
-interface IConvoModel {
-  key : any;
-  convos : Array<IConvo>;
-  onChanges : Array<any>;
-  subscribe(onChange);
-  inform();
-  addConvo(convo: IConvo);
-  save(convoToSave: IConvo);
-  destroy(convo: IConvo);
-}
-
-interface IConvoItemProps {
-  key : string,
-  convo : IConvo;
-  active? : boolean;
-  onSave: (val: any) => void;
-  onDestroy: () => void;
-  onChange: ()  => void;
-}
-
-interface IConvoItemState {
-  title: string
+  name: string;
+  session: string;
+  displayName: string;
+  iconUrl: string;
 }
 
 interface IUserModel {
-  key : any;
   users : Array<IUser>;
-  onChanges : Array<any>;
   subscribe(onChange);
   inform();
-  setUsers(users: Array<IUser>);
-  destroy(user: IUser);
+  find(name: string): IUser;
 }
 
 interface IUserItemProps {
   user: IUser;
-  onChange: ()  => void;
+  onSelect: ()  => void;
 }
 
-interface StompListener {
-  onConnect(frame): void;
+interface IUserItemState {}
+
+interface IUsersViewProps {
+  thisUser: IUser;
+  userModel: IUserModel;
+  onUsersSelected: (users: Array<IUser>) => void;
+  onBack: () => void;
+  csrf: ICsrf;
 }
 
+interface IUsersViewState {}
 
-
-interface ITodo {
+// convo list
+interface IConvo {
   id: string,
-  title: string,
-  completed: boolean
+  content: {[key:string]:string;};
+  users: Array<IUser>;
 }
 
-interface ITodoItemProps {
-  key : string,
-  todo : ITodo;
-  editing? : boolean;
-  onSave: (val: any) => void;
-  onDestroy: () => void;
-  onEdit: ()  => void;
-  onCancel: (event : any) => void;
-  onToggle: () => void;
-}
-
-interface ITodoItemState {
-  editText : string
-}
-
-interface ITodoFooterProps {
-  completedCount : number;
-  onClearCompleted : any;
-  nowShowing : string;
-  count : number;
-}
-
-
-interface ITodoModel {
-  key : any;
-  todos : Array<ITodo>;
-  onChanges : Array<any>;
+interface IConvoModel {
+  convos : Array<IConvo>;
   subscribe(onChange);
   inform();
-  addTodo(title : string);
-  toggleAll(checked);
-  toggle(todoToToggle);
-  destroy(todo);
-  save(todoToSave, text);
-  clearCompleted();
+  add(users: Array<IUser>): IConvo;
+  remove(convo: IConvo);
 }
 
-interface IAppProps {
-  model : IConvoModel;
-  stompClient : any;
-  user: string;
+interface IConvoItemProps {
+  // convoId: string;
+  // stompClient: any;
+  usernames: Array<string>;
+  onDestroy: () => void;
+  onSelect: ()  => void;
 }
 
-interface IUserProps {
-  model: IUserModel;
-  stompClient : any;
-  user: string;
+interface IConvoItemState {}
+
+interface IConvosViewProps {
+  thisUser: IUser;
+  convoModel: IConvoModel
+  onNewConvoButton: () => void;
+  onSelectConvo: (convo: IConvo) => void;
+  stompClient;
+  csrf: ICsrf;
 }
 
-interface IAppState {
-  editing? : string;
-  nowShowing? : string
+interface IConvosViewState {}
+
+// chat
+interface IChatViewProps {
+  thisUser: IUser;
+  convo: IConvo;
+  onBack: () => void;
+  csrf: ICsrf;
+  stompClient;
 }
+
+interface IChatViewState {}

@@ -1,37 +1,34 @@
 "use strict";
-var utils_1 = require("./utils");
 var UserModel = (function () {
-    function UserModel(key) {
+    function UserModel(key, thisUser, stompClient) {
         this.key = key;
+        this.thisUser = thisUser;
         this.users = [];
-        this.onChanges = [];
         this.userMap = {};
+        this.stompClient = stompClient;
+        this.onChanges = [];
+        var userTopic = "/user";
+        this.stompClient.subscribe('/topic/users', this.onAllUsers.bind(this), {});
     }
     UserModel.prototype.subscribe = function (onChange) {
         this.onChanges.push(onChange);
     };
     UserModel.prototype.inform = function () {
-        utils_1.Utils.store(this.key, this.users);
         this.onChanges.forEach(function (cb) { cb(); });
     };
-    UserModel.prototype.setUsers = function (usersToSet) {
-        var users = this.users;
-        var userMap = this.userMap;
-        usersToSet.forEach(function (u) {
-            if (!userMap.hasOwnProperty(u.id)) {
-                users.push(u);
-                userMap[u.id] = u;
-                console.log("added user " + JSON.stringify(u));
-            }
-        });
-        this.inform();
+    UserModel.prototype.find = function (name) {
+        return this.userMap[name];
     };
-    UserModel.prototype.destroy = function (user) {
-        this.users = this.users.filter(function (candidate) {
-            return candidate !== user;
+    UserModel.prototype.onAllUsers = function (message) {
+        var messageBody = JSON.parse(message.body);
+        this.setUsers(messageBody.allUsers);
+    };
+    UserModel.prototype.setUsers = function (usersToSet) {
+        var _this = this;
+        this.users = usersToSet;
+        this.users.forEach(function (u) {
+            _this.userMap[u.name] = u;
         });
-        delete this.userMap[user.id];
-        console.log("removed user " + JSON.stringify(user));
         this.inform();
     };
     return UserModel;

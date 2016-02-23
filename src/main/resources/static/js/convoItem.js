@@ -6,31 +6,27 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var ConvoItem = (function (_super) {
     __extends(ConvoItem, _super);
-    function ConvoItem(props) {
-        _super.call(this, props);
-        this.state = { title: this.buildTitle(this.props.convo) };
+    function ConvoItem() {
+        _super.call(this);
     }
-    ConvoItem.prototype.buildTitle = function (convo) {
-        var text = convo.users.reduce(function (title, user) {
-            return title += user.id + ", ";
-        }, "");
-        return text.substring(0, text.length - 2);
+    ConvoItem.prototype.componentDidMount = function () {
+        componentHandler.upgradeDom();
     };
-    ConvoItem.prototype.getActiveText = function () {
-        var activeText = this.props.active ? "active" : "";
-        return activeText;
-    };
-    ConvoItem.prototype.handleChange = function (event) {
-        event.preventDefault();
-        this.props.onChange();
-    };
-    ConvoItem.prototype.handleDeleteButton = function (event) {
-        event.preventDefault();
-        this.props.onDestroy();
+    ConvoItem.prototype.componentDidUpdate = function (prevProps, prevState, prevContext) {
+        componentHandler.upgradeDom();
     };
     ConvoItem.prototype.render = function () {
         var _this = this;
-        return (React.createElement("a", {href: "#", className: "list-group-item", onClick: function (e) { return _this.handleChange(e); }}, this.state.title, React.createElement("div", {className: "btn-group pull-right", role: "group"}, React.createElement("button", {type: "button", className: "btn btn-danger btn-xs", onClick: function (e) { return _this.handleDeleteButton(e); }}, React.createElement("span", {className: "glyphicon glyphicon-trash"})))));
+        return (React.createElement("div", {className: "mdl-list__item", onClick: function (e) { return _this.onSelect(e); }}, React.createElement("span", {className: "mdl-list__item-primary-content"}, React.createElement("i", {className: "material-icons mdl-list__item-avatar"}, "chat"), React.createElement("span", null, this.props.usernames.join(", "))), React.createElement("a", {className: "mdl-list__item-secondary-action", onClick: function (e) { return _this.onDelete(e); }}, React.createElement("i", {className: "material-icons"}, "delete"))));
+    };
+    ConvoItem.prototype.onSelect = function (event) {
+        event.preventDefault();
+        this.props.onSelect();
+    };
+    ConvoItem.prototype.onDelete = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.props.onDestroy();
     };
     return ConvoItem;
 }(React.Component));

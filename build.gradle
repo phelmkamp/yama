@@ -16,8 +16,6 @@ jar {
     baseName = 'honiara'
     version =  '0.0.1-SNAPSHOT'
 }
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -28,8 +26,19 @@ targetCompatibility = 1.8
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-websocket")
+	
     compile("org.springframework.boot:spring-boot-starter-security")
+	compile 'org.springframework.security.oauth:spring-security-oauth2'
+	
+	compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework:spring-messaging")
+	compile 'org.springframework.session:spring-session'
+	compile 'org.springframework.security:spring-security-messaging'
+	
+	compile 'org.springframework.data:spring-data-redis'
+	compile 'com.github.kstyrc:embedded-redis:0.6'
+	compile 'org.apache.commons:commons-pool2:2.2'
+	compile 'redis.clients:jedis:2.4.2'
 
 	compile 'org.projectlombok:lombok:1.16.6'
 	
@@ -43,6 +52,8 @@ dependencies {
 	compile 'org.webjars.bower:director:1.2.8'
 	compile 'org.webjars.npm:todomvc-common:1.0.2'
 	compile 'org.webjars:bootstrap-material-design:0.3.0'
+	
+	runtime 'com.h2database:h2'
 }
 
 task wrapper(type: Wrapper) {
