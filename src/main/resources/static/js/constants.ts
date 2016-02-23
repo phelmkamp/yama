@@ -1,8 +1,9 @@
+enum View {
+  Convos = 0,
+  Users = 1,
+  Chat = 2
+}
 
-const ALL_TODOS = 'all';
-const ACTIVE_TODOS = 'active';
-const COMPLETED_TODOS = 'completed';
-const ENTER_KEY = 13;
-const ESCAPE_KEY = 27;
+const CONVOS_TOPIC = '/queue/convos/';
 
-export { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS, ENTER_KEY, ESCAPE_KEY };
+export { View, CONVOS_TOPIC };

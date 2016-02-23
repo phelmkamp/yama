@@ -1,14 +1,16 @@
 package com.ankara.honiara.api.representations;
 
 import java.util.List;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Convo /*extends BaseRep*/ {
+public class Convo {
 
 	private String id;
-	private List<User> users;
-//	private Map<String, String> content;
+	private List<Session> users;
+	private Map<String, String> content;
 	
 	@JsonProperty
 	public String getId() {
@@ -20,19 +22,19 @@ public class Convo /*extends BaseRep*/ {
 		this.id = id;
 	}
 
-	public List<User> getUsers() {
+	public List<Session> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<User> users) {
+	public void setUsers(List<Session> users) {
 		this.users = users;
 	}
 
-	/*public Map<String, String> getContent() {
+	public Map<String, String> getContent() {
 		return content;
 	}
 
 	public void setContent(Map<String, String> content) {
 		this.content = content;
-	}*/
+	}
 }

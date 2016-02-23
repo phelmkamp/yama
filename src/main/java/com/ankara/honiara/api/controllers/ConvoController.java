@@ -16,18 +16,10 @@ public class ConvoController {
 	@Autowired
 	private SimpMessagingTemplate template;
 
-	@MessageMapping("/honiara/newConvos")
+	@MessageMapping("/newConvo")
 	public void newConvo(Convo convo, Principal principal) {		
 		convo.setId(UUID.randomUUID().toString());
-		convo.getUsers().forEach(user -> {
-			String dest = "/topic/users/" + user.getId() + "/newConvos";
-			template.convertAndSend(dest, convo);
-		});
+		convo.getUsers()
+			 .forEach(user -> template.convertAndSendToUser(user.getName(), "/queue/convos", convo));
 	}
-	
-//	@MessageMapping("/honiara/convos/*")
-//	public void process(Convo convo, Principal principal, @Header String destination) {
-//		String convoId = destination.substring(destination.lastIndexOf('/') + 1);		
-//		template.convertAndSend("/topic/convos/" + convoId, convo);
-//	}
 }

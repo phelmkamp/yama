@@ -8,15 +8,28 @@ var UserItem = (function (_super) {
     __extends(UserItem, _super);
     function UserItem(props) {
         _super.call(this, props);
-        this.state = { title: this.props.user.id };
     }
-    UserItem.prototype.handleChange = function (event) {
-        event.preventDefault();
-        this.props.onChange();
+    UserItem.prototype.componentDidMount = function () {
+        componentHandler.upgradeDom();
+    };
+    UserItem.prototype.componentDidUpdate = function (prevProps, prevState, prevContext) {
+        componentHandler.upgradeDom();
     };
     UserItem.prototype.render = function () {
         var _this = this;
-        return (React.createElement("a", {href: "#", className: "list-group-item", onClick: function (e) { return _this.handleChange(e); }, "data-dismiss": "modal"}, this.state.title));
+        return (React.createElement("div", {className: "mdl-list__item", onClick: function (e) { return _this.handleSelect(e); }}, React.createElement("span", {className: "mdl-list__item-primary-content"}, this.getIcon(), React.createElement("span", null, this.props.user.displayName))));
+    };
+    UserItem.prototype.getIcon = function () {
+        if (this.props.user.iconUrl) {
+            return (React.createElement("img", {className: "material-icons mdl-list__item-avatar", src: this.props.user.iconUrl}));
+        }
+        else {
+            return (React.createElement("i", {className: "material-icons mdl-list__item-avatar"}, "person"));
+        }
+    };
+    UserItem.prototype.handleSelect = function (event) {
+        event.preventDefault();
+        this.props.onSelect();
     };
     return UserItem;
 }(React.Component));

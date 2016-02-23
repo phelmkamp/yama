@@ -7,29 +7,49 @@
 /// <reference path="../../typings/main.d.ts" />
 /// <reference path="./interfaces.d.ts"/>
 
-class UserItem extends React.Component<IUserItemProps, IConvoItemState> {
+declare var componentHandler;
 
-  public state : IConvoItemState;
+class UserItem extends React.Component<IUserItemProps, IUserItemState> {
 
-  constructor(props : IUserItemProps){
+  public constructor(props : IUserItemProps){
     super(props);
-    this.state = { title: this.props.user.id };
   }
 
-  handleChange(event: __React.MouseEvent) {
-    event.preventDefault();
-    this.props.onChange();
+  public componentDidMount() {
+    componentHandler.upgradeDom();
+  }
+
+  public componentDidUpdate(prevProps, prevState, prevContext) {
+    componentHandler.upgradeDom();
   }
 
   public render() {
     return (
-      <a href="#"
-        className="list-group-item"
-        onClick={e => this.handleChange(e)}
-        data-dismiss="modal">
-          {this.state.title}
-      </a>
+      <div
+        className="mdl-list__item"
+        onClick={e => this.handleSelect(e)}>
+        <span className="mdl-list__item-primary-content">
+          {this.getIcon()}
+          <span>{this.props.user.displayName}</span>
+        </span>
+      </div>
     );
+  }
+
+  private getIcon() {
+    if (this.props.user.iconUrl) {
+      return (
+        <img className="material-icons mdl-list__item-avatar"
+          src={this.props.user.iconUrl} />
+      );
+    } else {
+      return (<i className="material-icons mdl-list__item-avatar">person</i>);
+    }
+  }
+
+  private handleSelect(event: __React.MouseEvent) {
+    event.preventDefault();
+    this.props.onSelect();
   }
 }
 

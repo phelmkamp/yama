@@ -1,69 +1,48 @@
-/*jshint quotmark: false */
-/*jshint white: false */
-/*jshint trailing: false */
-/*jshint newcap: false */
-/*global React */
-
 /// <reference path="../../typings/main.d.ts" />
 /// <reference path="./interfaces.d.ts"/>
 
-import { ENTER_KEY, ESCAPE_KEY } from "./constants";
+declare var componentHandler;
 
 class ConvoItem extends React.Component<IConvoItemProps, IConvoItemState> {
 
-  public state : IConvoItemState;
-
-  constructor(props : IConvoItemProps){
-    super(props);
-    this.state = { title: this.buildTitle(this.props.convo) };
+  public constructor() {
+    super();
   }
 
-  buildTitle(convo: IConvo) {
-    var text = convo.users.reduce(function (title, user) {
-      return title += user.id + ", ";
-    }, "");
-    return text.substring(0, text.length - 2);
+  public componentDidMount() {
+    componentHandler.upgradeDom();
   }
 
-  getActiveText() {
-    var activeText = this.props.active ? "active" : "";
-    return activeText;
+  public componentDidUpdate(prevProps, prevState, prevContext) {
+    componentHandler.upgradeDom();
   }
-
-  handleChange(event: __React.MouseEvent) {
-    event.preventDefault();
-    this.props.onChange();
-  }
-
-  handleDeleteButton(event: __React.MouseEvent) {
-    event.preventDefault();
-    this.props.onDestroy();
-  }
-
-  // <button
-  //   type="button"
-  //   className="btn btn-success btn-xs"
-  //   data-toggle="modal"
-  //   data-target="#userDialog">
-  //   <span className="glyphicon glyphicon-plus"></span>
-  // </button>
 
   public render() {
     return (
-      <a href="#"
-        className="list-group-item"
-        onClick={e => this.handleChange(e)}>
-          {this.state.title}
-          <div className="btn-group pull-right" role="group">
-            <button
-              type="button"
-              className="btn btn-danger btn-xs"
-              onClick={ e => this.handleDeleteButton(e) }>
-              <span className="glyphicon glyphicon-trash"></span>
-            </button>
-          </div>
-      </a>
+      <div
+        className="mdl-list__item"
+        onClick={e => this.onSelect(e)}>
+          <span className="mdl-list__item-primary-content">
+            <i className="material-icons mdl-list__item-avatar">chat</i>
+            <span>{this.props.usernames.join(", ")}</span>
+          </span>
+          <a className="mdl-list__item-secondary-action"
+            onClick={e => this.onDelete(e)}>
+              <i className="material-icons">delete</i>
+          </a>
+      </div>
     );
+  }
+
+  private onSelect(event: __React.MouseEvent) {
+    event.preventDefault();
+    this.props.onSelect();
+  }
+
+  private onDelete(event: __React.MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.props.onDestroy();
   }
 }
 

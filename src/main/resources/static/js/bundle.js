@@ -5,131 +5,164 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var convoModel_1 = require("./convoModel");
-var convoItem_1 = require("./convoItem");
+var constants_1 = require("./constants");
 var userModel_1 = require("./userModel");
-var userItem_1 = require("./userItem");
-var TodoApp = (function (_super) {
-    __extends(TodoApp, _super);
-    function TodoApp(props) {
-        _super.call(this, props);
-        this.state = {
-            editing: null
-        };
+var usersView_1 = require("./usersView");
+var convoModel_1 = require("./convoModel");
+var convosView_1 = require("./convosView");
+var chatView_1 = require("./chatView");
+var utils_1 = require("./utils");
+var MainView = (function (_super) {
+    __extends(MainView, _super);
+    function MainView(props) {
+        _super.call(this);
+        this.userModel = new userModel_1.UserModel('honiara-users', props.thisUser, props.stompClient);
+        this.userModel.subscribe(this.onUserModelChanged.bind(this));
+        this.state = { activeView: constants_1.View.Convos };
+        this.convoModel = new convoModel_1.ConvoModel('honiara-convos', props.stompClient);
+        this.convoModel.subscribe(this.onConvoModelChanged.bind(this));
     }
-    TodoApp.prototype.componentDidMount = function () {
-        var setState = this.setState;
-        this.connect();
+    MainView.prototype.componentDidUpdate = function (prevProps, prevState, prevContext) {
+        componentHandler.upgradeDom();
     };
-    TodoApp.prototype.connect = function () {
-        this.props.stompClient.connect({}, this.onConnect.bind(this));
-    };
-    TodoApp.prototype.onConnect = function (frame) {
-        user = frame.headers['user-name'];
-        var userTopic = "/topic/users/" + user;
-        this.props.stompClient.subscribe(userTopic + '/allUsers', this.onAllUsers.bind(this), {});
-        this.props.stompClient.send("/app/honiara/newUsers", {}, null);
-        this.props.stompClient.subscribe('/topic/newUsers', this.onUserJoin.bind(this), {});
-        this.props.stompClient.subscribe('/topic/exitingUsers', this.onUserLeft.bind(this), {});
-        this.props.stompClient.subscribe(userTopic + '/newConvos', this.onConvoAdded.bind(this), {});
-    };
-    TodoApp.prototype.onMessage = function (message) {
-        var messageBody = JSON.parse(message.body);
-        if (messageBody.sender != user) {
-            var response2 = React.findDOMNode(this.refs["response2"]);
-            response2.innerHTML = messageBody.content;
+    MainView.prototype.render = function () {
+        switch (this.state.activeView) {
+            case constants_1.View.Users:
+                return this.renderUsers();
+            case constants_1.View.Chat:
+                return this.renderChat();
+            default:
+                return this.renderConvos();
         }
     };
-    TodoApp.prototype.onConvoAdded = function (message) {
-        var messageBody = JSON.parse(message.body);
-        this.props.model.addConvo(messageBody);
-        this.props.stompClient.subscribe('/topic/convos/' + messageBody.id, this.onMessage.bind(this), {});
-    };
-    TodoApp.prototype.onUserLeft = function (message) {
-        var messageBody = JSON.parse(message.body);
-        userModel.destroy(messageBody.user);
-    };
-    TodoApp.prototype.onAllUsers = function (message) {
-        var messageBody = JSON.parse(message.body);
-        userModel.setUsers(messageBody.allUsers);
-    };
-    TodoApp.prototype.onUserJoin = function (message) {
-        var messageBody = JSON.parse(message.body);
-        userModel.setUsers([messageBody]);
-        this.props.stompClient.send("/app/honiara/users/" + messageBody.id + "/allUsers", {}, JSON.stringify({ 'allUsers': userModel.users }));
-    };
-    TodoApp.prototype.handleNewTodoKeyDown = function (event) {
-        event.preventDefault();
-        var val = React.findDOMNode(this.refs["newField"]).value.trim();
-        this.props.stompClient.send("/app/honiara/convos/" + this.state.editing, {}, JSON.stringify({ 'content': val }));
-    };
-    TodoApp.prototype.destroy = function (convo) {
-        this.props.model.destroy(convo);
-    };
-    TodoApp.prototype.change = function (convo) {
-        this.setState({ editing: convo.id });
-        console.log("editing: " + JSON.stringify(convo));
-    };
-    TodoApp.prototype.save = function (convoToSave) {
-        this.props.model.save(convoToSave);
-    };
-    TodoApp.prototype.render = function () {
+    MainView.prototype.renderConvos = function () {
         var _this = this;
-        var footer;
-        var main;
-        var convos = this.props.model.convos;
-        var convoItems = convos.map(function (convo) {
-            return (React.createElement(convoItem_1.ConvoItem, {key: convo.id, convo: convo, onDestroy: _this.destroy.bind(_this, convo), active: _this.state.editing === convo.id, onSave: _this.save.bind(_this, convo), onChange: _this.change.bind(_this, convo)}));
-        });
-        footer = (React.createElement("div", {className: "row"}, React.createElement("div", {className: "col-xs-12"}, React.createElement("footer", null, React.createElement("p", null, "© copyright 2016 phil helmkamp")))));
-        main = (React.createElement("div", {className: "row"}, React.createElement("div", {className: "col-xs-4"}, React.createElement("div", {className: "row"}, React.createElement("button", {type: "button", className: "btn btn-default btn-sm pull-right", "data-toggle": "modal", "data-target": "#userDialog"}, React.createElement("span", {className: "glyphicon glyphicon-asterisk"}))), React.createElement("div", {className: "row"}, React.createElement("div", {className: "list-group"}, convoItems))), React.createElement("div", {className: "form-group col-xs-4"}, React.createElement("label", null, "you"), React.createElement("textarea", {type: "text", className: "form-control", ref: "newField", placeholder: "chat here", onKeyUp: function (e) { return _this.handleNewTodoKeyDown(e); }, autoFocus: true, rows: 5})), React.createElement("div", {className: "col-xs-4"}, React.createElement("label", null, "friend"), React.createElement("p", {ref: "response2", className: "text-primary"}))));
-        return (React.createElement("div", {className: "container"}, main, React.createElement("hr", null), footer));
+        return (React.createElement(convosView_1.ConvosView, {thisUser: utils_1.Utils.extend(this.props.thisUser), convoModel: this.convoModel, onNewConvoButton: function () { _this.setState({ activeView: constants_1.View.Users }); }, onSelectConvo: function (convo) { _this.setState({ activeView: constants_1.View.Chat, activeConvo: convo }); }, stompClient: this.props.stompClient, csrf: this.props.csrf}));
     };
-    return TodoApp;
-}(React.Component));
-var Users = (function (_super) {
-    __extends(Users, _super);
-    function Users(props) {
-        _super.call(this, props);
-        this.state = {
-            editing: null
-        };
-    }
-    Users.prototype.componentDidMount = function () {
-        var setState = this.setState;
-    };
-    Users.prototype.change = function (selectedUser) {
-        var convo = { id: null, users: [{ id: user }, { id: selectedUser.id }] };
-        this.props.stompClient.send("/app/honiara/newConvos", {}, JSON.stringify(convo));
-    };
-    Users.prototype.render = function () {
+    MainView.prototype.renderUsers = function () {
         var _this = this;
-        var main;
-        var users = this.props.model.users;
-        var userItems = users.map(function (user) {
-            return (React.createElement(userItem_1.UserItem, {user: user, onChange: _this.change.bind(_this, user)}));
-        });
-        return (React.createElement("div", {className: "list-group"}, userItems));
+        return (React.createElement(usersView_1.UsersView, {thisUser: utils_1.Utils.extend(this.props.thisUser), userModel: this.userModel, onUsersSelected: function (users) { return _this.onUsersSelected(users); }, onBack: function () { return _this.setState({ activeView: constants_1.View.Convos }); }, csrf: this.props.csrf}));
     };
-    return Users;
+    MainView.prototype.renderChat = function () {
+        var _this = this;
+        return (React.createElement(chatView_1.ChatView, {thisUser: utils_1.Utils.extend(this.props.thisUser), convo: this.state.activeConvo, onBack: function () { return _this.setState({ activeView: constants_1.View.Convos }); }, csrf: this.props.csrf, stompClient: this.props.stompClient}));
+    };
+    MainView.prototype.onUsersSelected = function (users) {
+        var copy = users.map(function (u) {
+            return utils_1.Utils.extend(u);
+        });
+        copy.push(utils_1.Utils.extend(this.props.thisUser));
+        var convo = this.convoModel.add(copy);
+        this.setState({ activeView: constants_1.View.Convos });
+    };
+    MainView.prototype.onConvoModelChanged = function () {
+        this.forceUpdate();
+    };
+    MainView.prototype.onUserModelChanged = function () {
+        if (!this.props.thisUser.session) {
+            var user = this.userModel.find(this.props.thisUser.name);
+            if (user) {
+                this.props.thisUser = utils_1.Utils.extend(user);
+            }
+        }
+        else {
+            this.forceUpdate();
+        }
+    };
+    return MainView;
 }(React.Component));
-var model = new convoModel_1.ConvoModel('convos');
-var userModel = new userModel_1.UserModel('users');
-var socket = new SockJS('/honiara');
-var stompClient = Stomp.over(socket);
-var user = null;
-function render() {
-    React.render(React.createElement(TodoApp, {model: model, stompClient: stompClient, user: null}), document.getElementsByClassName('todoapp')[0]);
+var request = new XMLHttpRequest();
+request.onload = connect;
+request.open("GET", "/csrf", true);
+request.send();
+var stompClient;
+var csrf;
+function connect() {
+    var socket = new SockJS('/honiara');
+    stompClient = Stomp.over(socket);
+    csrf = JSON.parse(request.responseText);
+    var headers = {};
+    headers[csrf.headerName] = csrf.token;
+    stompClient.connect(headers, onConnect);
 }
-function renderUsers() {
-    React.render(React.createElement(Users, {model: userModel, stompClient: stompClient, user: null}), document.getElementsByClassName('usersview')[0]);
+function onConnect(frame) {
+    var thisUsername = frame.headers['user-name'];
+    var thisUser = { name: thisUsername, session: null,
+        displayName: "you", iconUrl: null };
+    React.render(React.createElement(MainView, {stompClient: stompClient, thisUser: thisUser, csrf: csrf}), document.getElementsByClassName('main')[0]);
 }
-model.subscribe(render);
-userModel.subscribe(renderUsers);
-render();
-renderUsers();
 
-},{"./convoItem":2,"./convoModel":3,"./userItem":4,"./userModel":5}],2:[function(require,module,exports){
+},{"./chatView":2,"./constants":3,"./convoModel":5,"./convosView":6,"./userModel":8,"./usersView":9,"./utils":10}],2:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var ChatView = (function (_super) {
+    __extends(ChatView, _super);
+    function ChatView(props) {
+        _super.call(this);
+    }
+    ChatView.prototype.componentDidMount = function () {
+        componentHandler.upgradeDom();
+    };
+    ChatView.prototype.componentDidUpdate = function (prevProps, prevState, prevContext) {
+        componentHandler.upgradeDom();
+    };
+    ChatView.prototype.render = function () {
+        var _this = this;
+        var usernames = [];
+        for (var _i = 0, _a = this.props.convo.users; _i < _a.length; _i++) {
+            var u = _a[_i];
+            if (u.name !== this.props.thisUser.name) {
+                usernames.push(u.displayName);
+            }
+        }
+        return (React.createElement("div", {className: "mdl-layout mdl-js-layout mdl-layout--fixed-header"}, React.createElement("header", {className: "mdl-layout__header"}, React.createElement("button", {className: "mdl-layout-icon mdl-button mdl-js-button mdl-button--icon", onClick: function (e) { return _this.onBackButton(e); }}, React.createElement("i", {className: "material-icons"}, "arrow_back")), React.createElement("div", {className: "mdl-layout__header-row"}, React.createElement("span", {className: "mdl-layout-title"}, usernames.join(", ")), React.createElement("div", {className: "mdl-layout-spacer"}), React.createElement("nav", {className: "mdl-navigation mdl-layout--large-screen-only"}, React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout"), React.createElement("form", {id: "logout", action: "/logout", method: "post"}, React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token}))))), React.createElement("div", {className: "mdl-grid"}, React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, React.createElement("h4", null, usernames[0]), React.createElement("p", {ref: "response2", className: ""}, this.getContent())), React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, React.createElement("form", {action: "#"}, React.createElement("div", {className: "mdl-textfield mdl-js-textfield mdl-textfield--floating-label"}, React.createElement("label", {htmlFor: "newField", className: "mdl-textfield__label"}, "you"), React.createElement("textarea", {type: "text", className: "mdl-textfield__input", id: "newField", ref: "newField", onKeyUp: function (e) { return _this.onType(e); }, autoFocus: true, rows: 5}, this.props.convo.content[this.props.thisUser.name])))))));
+    };
+    ChatView.prototype.getContent = function () {
+        var content = '';
+        for (var user in this.props.convo.content) {
+            if (user !== this.props.thisUser.name) {
+                content = this.props.convo.content[user];
+                break;
+            }
+        }
+        return content;
+    };
+    ChatView.prototype.onType = function (event) {
+        var val = React.findDOMNode(this.refs["newField"]).value.trim();
+        this.props.convo.content[this.props.thisUser.name] = val;
+        this.props.stompClient.send("/app/convos/" + this.props.convo.id, {}, JSON.stringify(this.props.convo));
+    };
+    ChatView.prototype.onBackButton = function (event) {
+        event.preventDefault();
+        this.props.onBack();
+    };
+    ChatView.prototype.onLogout = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var form = document.getElementById('logout');
+        form.submit();
+    };
+    return ChatView;
+}(React.Component));
+exports.ChatView = ChatView;
+
+},{}],3:[function(require,module,exports){
+"use strict";
+var View;
+(function (View) {
+    View[View["Convos"] = 0] = "Convos";
+    View[View["Users"] = 1] = "Users";
+    View[View["Chat"] = 2] = "Chat";
+})(View || (View = {}));
+exports.View = View;
+var CONVOS_TOPIC = '/queue/convos/';
+exports.CONVOS_TOPIC = CONVOS_TOPIC;
+
+},{}],4:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -138,76 +171,156 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var ConvoItem = (function (_super) {
     __extends(ConvoItem, _super);
-    function ConvoItem(props) {
-        _super.call(this, props);
-        this.state = { title: this.buildTitle(this.props.convo) };
+    function ConvoItem() {
+        _super.call(this);
     }
-    ConvoItem.prototype.buildTitle = function (convo) {
-        var text = convo.users.reduce(function (title, user) {
-            return title += user.id + ", ";
-        }, "");
-        return text.substring(0, text.length - 2);
+    ConvoItem.prototype.componentDidMount = function () {
+        componentHandler.upgradeDom();
     };
-    ConvoItem.prototype.getActiveText = function () {
-        var activeText = this.props.active ? "active" : "";
-        return activeText;
-    };
-    ConvoItem.prototype.handleChange = function (event) {
-        event.preventDefault();
-        this.props.onChange();
-    };
-    ConvoItem.prototype.handleDeleteButton = function (event) {
-        event.preventDefault();
-        this.props.onDestroy();
+    ConvoItem.prototype.componentDidUpdate = function (prevProps, prevState, prevContext) {
+        componentHandler.upgradeDom();
     };
     ConvoItem.prototype.render = function () {
         var _this = this;
-        return (React.createElement("a", {href: "#", className: "list-group-item", onClick: function (e) { return _this.handleChange(e); }}, this.state.title, React.createElement("div", {className: "btn-group pull-right", role: "group"}, React.createElement("button", {type: "button", className: "btn btn-danger btn-xs", onClick: function (e) { return _this.handleDeleteButton(e); }}, React.createElement("span", {className: "glyphicon glyphicon-trash"})))));
+        return (React.createElement("div", {className: "mdl-list__item", onClick: function (e) { return _this.onSelect(e); }}, React.createElement("span", {className: "mdl-list__item-primary-content"}, React.createElement("i", {className: "material-icons mdl-list__item-avatar"}, "chat"), React.createElement("span", null, this.props.usernames.join(", "))), React.createElement("a", {className: "mdl-list__item-secondary-action", onClick: function (e) { return _this.onDelete(e); }}, React.createElement("i", {className: "material-icons"}, "delete"))));
+    };
+    ConvoItem.prototype.onSelect = function (event) {
+        event.preventDefault();
+        this.props.onSelect();
+    };
+    ConvoItem.prototype.onDelete = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.props.onDestroy();
     };
     return ConvoItem;
 }(React.Component));
 exports.ConvoItem = ConvoItem;
 
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
-var utils_1 = require("./utils");
 var ConvoModel = (function () {
-    function ConvoModel(key) {
+    function ConvoModel(key, stompClient) {
         this.key = key;
+        this.stompClient = stompClient;
         this.convos = [];
         this.onChanges = [];
+        this.convosMap = {};
+        this.stompClient.subscribe('/user/queue/convos', this.onConvoChanged.bind(this));
+        this.stompClient.subscribe('/user/queue/messages', this.onMessage.bind(this));
     }
     ConvoModel.prototype.subscribe = function (onChange) {
         this.onChanges.push(onChange);
     };
     ConvoModel.prototype.inform = function () {
-        utils_1.Utils.store(this.key, this.convos);
         this.onChanges.forEach(function (cb) { cb(); });
     };
-    ConvoModel.prototype.addConvo = function (convo) {
-        this.convos = this.convos.concat({
-            id: convo.id,
-            users: convo.users
-        });
-        this.inform();
+    ConvoModel.prototype.add = function (users) {
+        var content = {};
+        for (var _i = 0, users_1 = users; _i < users_1.length; _i++) {
+            var u = users_1[_i];
+            content[u.name] = '';
+        }
+        var convo = { id: null, content: content, users: users };
+        this.stompClient.send('/app/newConvo', {}, JSON.stringify(convo));
+        return convo;
     };
-    ConvoModel.prototype.destroy = function (convo) {
+    ConvoModel.prototype.remove = function (convo) {
         this.convos = this.convos.filter(function (candidate) {
             return candidate !== convo;
         });
+        delete this.convosMap[convo.id];
         this.inform();
     };
-    ConvoModel.prototype.save = function (convoToSave) {
-        this.convos = this.convos.map(function (convo) {
-            return convo !== convoToSave ? convo : utils_1.Utils.extend({}, convo, { users: convoToSave.users });
-        });
+    ConvoModel.prototype.onConvoChanged = function (message) {
+        var convo = JSON.parse(message.body);
+        if (!this.convosMap.hasOwnProperty(convo.id)) {
+            this.onConvoAdded(convo);
+        }
+        else {
+        }
+    };
+    ConvoModel.prototype.onConvoAdded = function (convo) {
+        this.convos.push(convo);
+        this.convosMap[convo.id] = convo;
+        this.inform();
+    };
+    ConvoModel.prototype.onMessage = function (message) {
+        var messageBody = JSON.parse(message.body);
+        var destConvo = messageBody.convoId;
+        var convo = this.convosMap[destConvo];
+        if (convo) {
+            convo.content[messageBody.sender] = messageBody.content;
+        }
         this.inform();
     };
     return ConvoModel;
 }());
 exports.ConvoModel = ConvoModel;
 
-},{"./utils":6}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var convoItem_1 = require("./convoItem");
+var ConvosView = (function (_super) {
+    __extends(ConvosView, _super);
+    function ConvosView(props) {
+        _super.call(this);
+    }
+    ConvosView.prototype.componentDidMount = function () {
+        componentHandler.upgradeDom();
+    };
+    ConvosView.prototype.componentDidUpdate = function (prevProps, prevState, prevContext) {
+        componentHandler.upgradeDom();
+    };
+    ConvosView.prototype.render = function () {
+        var _this = this;
+        var convos = this.props.convoModel.convos;
+        var convoPane;
+        if (convos.length > 0) {
+            var convoItems = convos.map(function (convo) {
+                var usernames = convo.users
+                    .filter(function (u) {
+                    return u.name !== _this.props.thisUser.name;
+                })
+                    .map(function (u) {
+                    return u.displayName;
+                });
+                return (React.createElement(convoItem_1.ConvoItem, {usernames: usernames, onDestroy: _this.onDeleteConvoAction.bind(_this, convo), onSelect: _this.onSelectConvoAction.bind(_this, convo)}));
+            });
+            convoPane = (React.createElement("div", {className: "mdl-list"}, convoItems));
+        }
+        else {
+            convoPane = (React.createElement("div", {className: "mdl-grid"}, React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, React.createElement("h4", null, "no convos yet"))));
+        }
+        return (React.createElement("div", {className: "mdl-layout mdl-js-layout mdl-layout--fixed-header"}, React.createElement("header", {className: "mdl-layout__header"}, React.createElement("div", {className: "mdl-layout__header-row"}, React.createElement("span", {className: "mdl-layout-title"}, "convos"), React.createElement("div", {className: "mdl-layout-spacer"}), React.createElement("nav", {className: "mdl-navigation mdl-layout--large-screen-only"}, React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout")))), React.createElement("div", {className: "mdl-layout__drawer"}, React.createElement("span", {className: "mdl-layout-title"}, "honiara"), React.createElement("nav", {className: "mdl-navigation"}, React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout"))), convoPane, React.createElement("main", {className: "mdl-layout__content"}, React.createElement("button", {type: "button", onClick: function (e) { return _this.onNewConvoButton(e); }, className: classNames("mdl-button", "mdl-js-button", "mdl-button--fab", "mdl-js-ripple-effect", "mdl-button--colored", "floating-fab")}, React.createElement("i", {className: "material-icons"}, "add"))), React.createElement("form", {id: "logout", action: "/logout", method: "post", type: "hidden"}, React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token}))));
+    };
+    ConvosView.prototype.onNewConvoButton = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.props.onNewConvoButton();
+    };
+    ConvosView.prototype.onDeleteConvoAction = function (convo) {
+        this.props.convoModel.remove(convo);
+    };
+    ConvosView.prototype.onSelectConvoAction = function (convo) {
+        this.props.onSelectConvo(convo);
+    };
+    ConvosView.prototype.onLogout = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var form = document.getElementById('logout');
+        form.submit();
+    };
+    return ConvosView;
+}(React.Component));
+exports.ConvosView = ConvosView;
+
+},{"./convoItem":4}],7:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -218,62 +331,128 @@ var UserItem = (function (_super) {
     __extends(UserItem, _super);
     function UserItem(props) {
         _super.call(this, props);
-        this.state = { title: this.props.user.id };
     }
-    UserItem.prototype.handleChange = function (event) {
-        event.preventDefault();
-        this.props.onChange();
+    UserItem.prototype.componentDidMount = function () {
+        componentHandler.upgradeDom();
+    };
+    UserItem.prototype.componentDidUpdate = function (prevProps, prevState, prevContext) {
+        componentHandler.upgradeDom();
     };
     UserItem.prototype.render = function () {
         var _this = this;
-        return (React.createElement("a", {href: "#", className: "list-group-item", onClick: function (e) { return _this.handleChange(e); }, "data-dismiss": "modal"}, this.state.title));
+        return (React.createElement("div", {className: "mdl-list__item", onClick: function (e) { return _this.handleSelect(e); }}, React.createElement("span", {className: "mdl-list__item-primary-content"}, this.getIcon(), React.createElement("span", null, this.props.user.displayName))));
+    };
+    UserItem.prototype.getIcon = function () {
+        if (this.props.user.iconUrl) {
+            return (React.createElement("img", {className: "material-icons mdl-list__item-avatar", src: this.props.user.iconUrl}));
+        }
+        else {
+            return (React.createElement("i", {className: "material-icons mdl-list__item-avatar"}, "person"));
+        }
+    };
+    UserItem.prototype.handleSelect = function (event) {
+        event.preventDefault();
+        this.props.onSelect();
     };
     return UserItem;
 }(React.Component));
 exports.UserItem = UserItem;
 
-},{}],5:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
-var utils_1 = require("./utils");
 var UserModel = (function () {
-    function UserModel(key) {
+    function UserModel(key, thisUser, stompClient) {
         this.key = key;
+        this.thisUser = thisUser;
         this.users = [];
-        this.onChanges = [];
         this.userMap = {};
+        this.stompClient = stompClient;
+        this.onChanges = [];
+        var userTopic = "/user";
+        this.stompClient.subscribe('/topic/users', this.onAllUsers.bind(this), {});
     }
     UserModel.prototype.subscribe = function (onChange) {
         this.onChanges.push(onChange);
     };
     UserModel.prototype.inform = function () {
-        utils_1.Utils.store(this.key, this.users);
         this.onChanges.forEach(function (cb) { cb(); });
     };
-    UserModel.prototype.setUsers = function (usersToSet) {
-        var users = this.users;
-        var userMap = this.userMap;
-        usersToSet.forEach(function (u) {
-            if (!userMap.hasOwnProperty(u.id)) {
-                users.push(u);
-                userMap[u.id] = u;
-                console.log("added user " + JSON.stringify(u));
-            }
-        });
-        this.inform();
+    UserModel.prototype.find = function (name) {
+        return this.userMap[name];
     };
-    UserModel.prototype.destroy = function (user) {
-        this.users = this.users.filter(function (candidate) {
-            return candidate !== user;
+    UserModel.prototype.onAllUsers = function (message) {
+        var messageBody = JSON.parse(message.body);
+        this.setUsers(messageBody.allUsers);
+    };
+    UserModel.prototype.setUsers = function (usersToSet) {
+        var _this = this;
+        this.users = usersToSet;
+        this.users.forEach(function (u) {
+            _this.userMap[u.name] = u;
         });
-        delete this.userMap[user.id];
-        console.log("removed user " + JSON.stringify(user));
         this.inform();
     };
     return UserModel;
 }());
 exports.UserModel = UserModel;
 
-},{"./utils":6}],6:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var userItem_1 = require("./userItem");
+var UsersView = (function (_super) {
+    __extends(UsersView, _super);
+    function UsersView(props) {
+        _super.call(this);
+    }
+    UsersView.prototype.componentDidMount = function () {
+        componentHandler.upgradeDom();
+    };
+    UsersView.prototype.componentDidUpdate = function () {
+        componentHandler.upgradeDom();
+    };
+    UsersView.prototype.render = function () {
+        var _this = this;
+        var users = this.props.userModel.users.filter(function (user) {
+            return user.name !== _this.props.thisUser.name;
+        });
+        var userPane;
+        if (users.length > 0) {
+            var userItems = users.map(function (user) {
+                return (React.createElement(userItem_1.UserItem, {user: user, onSelect: _this.onUserSelect.bind(_this, user)}));
+            });
+            userPane = (React.createElement("main", {className: "mdl-layout__content"}, React.createElement("div", {className: "mdl-list"}, userItems)));
+        }
+        else {
+            userPane = (React.createElement("div", {className: "mdl-grid"}, React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, React.createElement("h4", null, "no users yet"))));
+        }
+        return (React.createElement("div", {className: "mdl-layout mdl-js-layout mdl-layout--fixed-header"}, React.createElement("header", {className: "mdl-layout__header"}, React.createElement("button", {className: "mdl-layout-icon mdl-button mdl-js-button mdl-button--icon", onClick: function (e) { return _this.onBackButton(e); }}, React.createElement("i", {className: "material-icons"}, "arrow_back")), React.createElement("div", {className: "mdl-layout__header-row"}, React.createElement("span", {className: "mdl-layout-title"}, "users"), React.createElement("div", {className: "mdl-layout-spacer"}), React.createElement("nav", {className: "mdl-navigation mdl-layout--large-screen-only"}, React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout"), React.createElement("form", {id: "logout", action: "/logout", method: "post"}, React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token}))))), userPane));
+    };
+    UsersView.prototype.onUserModelChanged = function () {
+        this.setState({});
+    };
+    UsersView.prototype.onUserSelect = function (user) {
+        this.props.onUsersSelected([user]);
+    };
+    UsersView.prototype.onBackButton = function (event) {
+        event.preventDefault();
+        this.props.onBack();
+    };
+    UsersView.prototype.onLogout = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var form = document.getElementById('logout');
+        form.submit();
+    };
+    return UsersView;
+}(React.Component));
+exports.UsersView = UsersView;
+
+},{"./userItem":7}],10:[function(require,module,exports){
 "use strict";
 var Utils = (function () {
     function Utils() {
@@ -299,7 +478,7 @@ var Utils = (function () {
             return localStorage.setItem(namespace, JSON.stringify(data));
         }
         var store = localStorage.getItem(namespace);
-        return (store && JSON.parse(store)) || [];
+        return (store && JSON.parse(store)) || null;
     };
     Utils.extend = function () {
         var objs = [];

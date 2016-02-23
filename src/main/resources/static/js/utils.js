@@ -23,7 +23,7 @@ var Utils = (function () {
             return localStorage.setItem(namespace, JSON.stringify(data));
         }
         var store = localStorage.getItem(namespace);
-        return (store && JSON.parse(store)) || [];
+        return (store && JSON.parse(store)) || null;
     };
     Utils.extend = function () {
         var objs = [];

@@ -1,31 +1,35 @@
-/*jshint quotmark:false */
-/*jshint white:false */
-/*jshint trailing:false */
-/*jshint newcap:false */
-
 /// <reference path="../../typings/main.d.ts" />
 /// <reference path="./interfaces.d.ts"/>
 
-import { Utils } from "./utils";
-
-// Generic "model" object. You can use whatever
-// framework you want. For this application it
-// may not even be worth separating this logic
-// out, but we do this to demonstrate one way to
-// separate out parts of your application.
 class UserModel implements IUserModel {
 
-  public key : string;
-  public users : Array<IUser>;
-  public onChanges : Array<any>;
+  public key: string;
+  public users: Array<IUser>;
 
-  private userMap: any;
+  private onChanges: Array<any>;
+  private stompClient;
+  private userMap: {[key:string]:IUser};
+  private thisUser: IUser;
 
-  constructor(key) {
+  public constructor(key: string, thisUser: IUser, stompClient) {
     this.key = key;
-    this.users = []; //Utils.store(key);
-    this.onChanges = [];
+    this.thisUser = thisUser;
+
+    // var thisUser = {name: thisUsername};
+    // this.users = [thisUser];
+    // this.userMap = {};
+    // this.userMap[thisUsername] = thisUser;
+    this.users = [];
     this.userMap = {};
+
+    this.stompClient = stompClient;
+    this.onChanges = [];
+
+    // var userTopic = "/topic/users/" + thisUsername;
+    var userTopic = "/user";
+    this.stompClient.subscribe('/topic/users', this.onAllUsers.bind(this), {});
+    // this.stompClient.subscribe('/topic/newUsers', this.onUserJoin.bind(this), {});
+    // this.stompClient.subscribe('/topic/exitingUsers', this.onUserLeft.bind(this), {});
   }
 
   public subscribe(onChange) {
@@ -33,35 +37,73 @@ class UserModel implements IUserModel {
   }
 
   public inform() {
-    Utils.store(this.key, this.users);
     this.onChanges.forEach(function (cb) { cb(); });
   }
 
-  public setUsers(usersToSet : Array<IUser>) {
-    var users = this.users;
-    var userMap = this.userMap;
-    usersToSet.forEach(function (u) {
-      if (!userMap.hasOwnProperty(u.id)) {
-        users.push(u);
-        userMap[u.id] = u;
-        console.log("added user " + JSON.stringify(u));
-      }
-    });
+  public find(name: string) {
+    return this.userMap[name];
+  }
 
+  // private onUserLeft(message) {
+  //   var messageBody = JSON.parse(message.body);
+  //   this.destroy(messageBody);
+  // }
+
+  private onAllUsers(message) {
+    var messageBody = JSON.parse(message.body);
+    this.setUsers(messageBody.allUsers);
+  }
+
+  // private onUserJoin(message) {
+  //   var messageBody: IUser = JSON.parse(message.body);
+  //   this.addUsers([messageBody]);
+  //
+  //   // if (this.thisUsername !== messageBody.name) {
+  //   //   this.stompClient.send("/app/welcome",
+  //   //     {},
+  //   //     JSON.stringify({to: messageBody.name, allUsers: this.users}));
+  //   // }
+  // }
+
+  private setUsers(usersToSet: Array<IUser>) {
+    this.users = usersToSet;
+    this.users.forEach(u => {
+      this.userMap[u.name] = u;
+    });
     this.inform();
   }
 
-  public destroy(user : IUser) {
-    this.users = this.users.filter(function (candidate) {
-      return candidate !== user;
-    });
+  // private addUsers(usersToSet : Array<IUser>) {
+  //   var users = this.users;
+  //   var userMap = this.userMap;
+  //   usersToSet.forEach(this.addUser.bind(this));
+  // }
+  //
+  // private addUser(u: IUser) {
+  //   if (!this.userMap.hasOwnProperty(u.name)) {
+  //     this.users.push(u);
+  //     this.userMap[u.name] = u;
+  //     this.inform();
+  //     console.log("added user " + JSON.stringify(u));
+  //   }
+  // }
 
-    delete this.userMap[user.id];
-
-    console.log("removed user " + JSON.stringify(user));
-
-    this.inform();
-  }
+  // public destroy(user : IUser) {
+  //   var deletedUser: IUser = null;
+  //   this.users = this.users.filter(function (candidate) {
+  //     var found = candidate.session == user.session;
+  //     if (found) {
+  //       deletedUser = candidate;
+  //     }
+  //     return !found;
+  //   });
+  //
+  //   if (deletedUser) {
+  //     delete this.userMap[deletedUser.name];
+  //     this.inform();
+  //     console.log("removed user " + JSON.stringify(deletedUser));
+  //   }
+  // }
 }
 
 export { UserModel };

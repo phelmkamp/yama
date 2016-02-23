@@ -1,11 +1,10 @@
 "use strict";
-var ALL_TODOS = 'all';
-exports.ALL_TODOS = ALL_TODOS;
-var ACTIVE_TODOS = 'active';
-exports.ACTIVE_TODOS = ACTIVE_TODOS;
-var COMPLETED_TODOS = 'completed';
-exports.COMPLETED_TODOS = COMPLETED_TODOS;
-var ENTER_KEY = 13;
-exports.ENTER_KEY = ENTER_KEY;
-var ESCAPE_KEY = 27;
-exports.ESCAPE_KEY = ESCAPE_KEY;
+var View;
+(function (View) {
+    View[View["Convos"] = 0] = "Convos";
+    View[View["Users"] = 1] = "Users";
+    View[View["Chat"] = 2] = "Chat";
+})(View || (View = {}));
+exports.View = View;
+var CONVOS_TOPIC = '/queue/convos/';
+exports.CONVOS_TOPIC = CONVOS_TOPIC;

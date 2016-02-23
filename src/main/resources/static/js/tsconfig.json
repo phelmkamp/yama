@@ -23,14 +23,14 @@
         "constants.ts",
         "convoModel.ts",
         "interfaces.d.ts",
-        "todoModel.ts",
         "userModel.ts",
         "utils.ts",
         "app.tsx",
+        "chatView.tsx",
         "convoItem.tsx",
-        "footer.tsx",
-        "todoItem.tsx",
-        "userItem.tsx"
+        "convosView.tsx",
+        "userItem.tsx",
+        "usersView.tsx"
     ],
     "exclude": [],
     "atom": {

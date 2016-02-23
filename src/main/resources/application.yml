@@ -2,4 +2,21 @@ spring:
   resources:
     chain:
       enabled: true
+
+security:
+  oauth2:
+    client:
+      clientId: 404084727012-ldbusj40cbohkotqp0tfmvq4ki9i23uh.apps.googleusercontent.com
+      clientSecret: 4Q6c1r5Pnxm4Hx4IUm35zoNz
+      accessTokenUri: https://www.googleapis.com/oauth2/v3/token
+      userAuthorizationUri: https://accounts.google.com/o/oauth2/auth
+      clientAuthenticationScheme: query
+      scope: https://www.googleapis.com/auth/plus.me
+    resource:
+      userInfoUri: https://www.googleapis.com/plus/v1/people/me
+      preferTokenInfo: false
       
+#logging:
+#  level:
+#    org.springframework: debug
+    

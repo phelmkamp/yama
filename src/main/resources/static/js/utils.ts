@@ -28,7 +28,7 @@ class Utils {
     }
 
     var store = localStorage.getItem(namespace);
-    return (store && JSON.parse(store)) || [];
+    return (store && JSON.parse(store)) || null;
   }
 
   public static extend(...objs : any[]) : any {
