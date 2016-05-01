@@ -1,1 +1,2 @@
-# honiara
+# yama
+yet another messaging app

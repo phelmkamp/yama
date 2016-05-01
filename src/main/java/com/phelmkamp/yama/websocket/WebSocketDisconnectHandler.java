@@ -1,12 +1,12 @@
-package com.ankara.honiara.websocket;
+package com.phelmkamp.yama.websocket;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import com.ankara.honiara.api.representations.Sessions;
-import com.ankara.honiara.data.SessionRepo;
+import com.phelmkamp.yama.api.representations.Sessions;
+import com.phelmkamp.yama.data.SessionRepo;
 
 public class WebSocketDisconnectHandler
 		implements ApplicationListener<SessionDisconnectEvent> {

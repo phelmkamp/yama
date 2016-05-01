@@ -23,12 +23,12 @@ class MainView extends React.Component<IMainViewProps, IMainViewState> {
   public constructor(props: IMainViewProps) {
     super();
 
-    this.userModel = new UserModel('honiara-users', props.thisUser, props.stompClient);
+    this.userModel = new UserModel('yama-users', props.thisUser, props.stompClient);
     this.userModel.subscribe(this.onUserModelChanged.bind(this));
     // props.stompClient.send("/app/newUsers", {}, null);
 
     this.state = { activeView: View.Convos };
-    this.convoModel = new ConvoModel('honiara-convos', props.stompClient);
+    this.convoModel = new ConvoModel('yama-convos', props.stompClient);
     this.convoModel.subscribe(this.onConvoModelChanged.bind(this));
   }
 
@@ -124,7 +124,7 @@ var stompClient;
 var csrf : ICsrf;
 
 function connect() {
-  var socket = new SockJS('/honiara');
+  var socket = new SockJS('/yama');
   stompClient = Stomp.over(socket);
 
   csrf = JSON.parse(request.responseText);

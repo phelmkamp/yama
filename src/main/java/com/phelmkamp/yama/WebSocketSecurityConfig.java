@@ -1,4 +1,4 @@
-package com.ankara.honiara;
+package com.phelmkamp.yama;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.messaging.MessageSecurityMetadataSourceRegistry;

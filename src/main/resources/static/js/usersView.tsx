@@ -47,7 +47,7 @@ class UsersView extends React.Component<IUsersViewProps, IUsersViewState> {
       userPane = (
         <div className="mdl-grid">
           <div className="mdl-cell mdl-cell--12-col">
-            <h4>no users yet</h4>
+            <h4>no other users are online at this time :(</h4>
           </div>
         </div>
       );

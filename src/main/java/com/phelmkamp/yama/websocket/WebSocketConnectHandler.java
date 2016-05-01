@@ -1,4 +1,4 @@
-package com.ankara.honiara.websocket;
+package com.phelmkamp.yama.websocket;
 
 import java.security.Principal;
 import java.util.Map;
@@ -11,9 +11,9 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 
-import com.ankara.honiara.api.representations.Session;
-import com.ankara.honiara.api.representations.Sessions;
-import com.ankara.honiara.data.SessionRepo;
+import com.phelmkamp.yama.api.representations.Session;
+import com.phelmkamp.yama.api.representations.Sessions;
+import com.phelmkamp.yama.data.SessionRepo;
 
 public class WebSocketConnectHandler implements ApplicationListener<SessionConnectEvent> {
 	

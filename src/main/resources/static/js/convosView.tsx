@@ -62,7 +62,7 @@ class ConvosView extends React.Component<IConvosViewProps, IConvosViewState> {
       convoPane = (
         <div className="mdl-grid">
           <div className="mdl-cell mdl-cell--12-col">
-            <h4>no convos yet</h4>
+            <h4>no active conversations</h4>
           </div>
         </div>
       );
@@ -72,7 +72,7 @@ class ConvosView extends React.Component<IConvosViewProps, IConvosViewState> {
       <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header">
         <header className="mdl-layout__header">
   		    <div className="mdl-layout__header-row">
-  		      <span className="mdl-layout-title">convos</span>
+  		      <span className="mdl-layout-title">conversations</span>
   		      <div className="mdl-layout-spacer"></div>
   		      <nav className="mdl-navigation mdl-layout--large-screen-only">
   		        <a className="mdl-navigation__link"
@@ -82,7 +82,7 @@ class ConvosView extends React.Component<IConvosViewProps, IConvosViewState> {
   		    </div>
   		  </header>
   		  <div className="mdl-layout__drawer">
-  		    <span className="mdl-layout-title">honiara</span>
+  		    <span className="mdl-layout-title">yama</span>
   		    <nav className="mdl-navigation">
             <a className="mdl-navigation__link"
               href=""

@@ -16,10 +16,10 @@ var MainView = (function (_super) {
     __extends(MainView, _super);
     function MainView(props) {
         _super.call(this);
-        this.userModel = new userModel_1.UserModel('honiara-users', props.thisUser, props.stompClient);
+        this.userModel = new userModel_1.UserModel('yama-users', props.thisUser, props.stompClient);
         this.userModel.subscribe(this.onUserModelChanged.bind(this));
         this.state = { activeView: constants_1.View.Convos };
-        this.convoModel = new convoModel_1.ConvoModel('honiara-convos', props.stompClient);
+        this.convoModel = new convoModel_1.ConvoModel('yama-convos', props.stompClient);
         this.convoModel.subscribe(this.onConvoModelChanged.bind(this));
     }
     MainView.prototype.componentDidUpdate = function (prevProps, prevState, prevContext) {
@@ -78,7 +78,7 @@ request.send();
 var stompClient;
 var csrf;
 function connect() {
-    var socket = new SockJS('/honiara');
+    var socket = new SockJS('/yama');
     stompClient = Stomp.over(socket);
     csrf = JSON.parse(request.responseText);
     var headers = {};
@@ -295,9 +295,9 @@ var ConvosView = (function (_super) {
             convoPane = (React.createElement("div", {className: "mdl-list"}, convoItems));
         }
         else {
-            convoPane = (React.createElement("div", {className: "mdl-grid"}, React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, React.createElement("h4", null, "no convos yet"))));
+            convoPane = (React.createElement("div", {className: "mdl-grid"}, React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, React.createElement("h4", null, "no active conversations"))));
         }
-        return (React.createElement("div", {className: "mdl-layout mdl-js-layout mdl-layout--fixed-header"}, React.createElement("header", {className: "mdl-layout__header"}, React.createElement("div", {className: "mdl-layout__header-row"}, React.createElement("span", {className: "mdl-layout-title"}, "convos"), React.createElement("div", {className: "mdl-layout-spacer"}), React.createElement("nav", {className: "mdl-navigation mdl-layout--large-screen-only"}, React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout")))), React.createElement("div", {className: "mdl-layout__drawer"}, React.createElement("span", {className: "mdl-layout-title"}, "honiara"), React.createElement("nav", {className: "mdl-navigation"}, React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout"))), convoPane, React.createElement("main", {className: "mdl-layout__content"}, React.createElement("button", {type: "button", onClick: function (e) { return _this.onNewConvoButton(e); }, className: classNames("mdl-button", "mdl-js-button", "mdl-button--fab", "mdl-js-ripple-effect", "mdl-button--colored", "floating-fab")}, React.createElement("i", {className: "material-icons"}, "add"))), React.createElement("form", {id: "logout", action: "/logout", method: "post", type: "hidden"}, React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token}))));
+        return (React.createElement("div", {className: "mdl-layout mdl-js-layout mdl-layout--fixed-header"}, React.createElement("header", {className: "mdl-layout__header"}, React.createElement("div", {className: "mdl-layout__header-row"}, React.createElement("span", {className: "mdl-layout-title"}, "conversations"), React.createElement("div", {className: "mdl-layout-spacer"}), React.createElement("nav", {className: "mdl-navigation mdl-layout--large-screen-only"}, React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout")))), React.createElement("div", {className: "mdl-layout__drawer"}, React.createElement("span", {className: "mdl-layout-title"}, "yama"), React.createElement("nav", {className: "mdl-navigation"}, React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout"))), convoPane, React.createElement("main", {className: "mdl-layout__content"}, React.createElement("button", {type: "button", onClick: function (e) { return _this.onNewConvoButton(e); }, className: classNames("mdl-button", "mdl-js-button", "mdl-button--fab", "mdl-js-ripple-effect", "mdl-button--colored", "floating-fab")}, React.createElement("i", {className: "material-icons"}, "add"))), React.createElement("form", {id: "logout", action: "/logout", method: "post", type: "hidden"}, React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token}))));
     };
     ConvosView.prototype.onNewConvoButton = function (event) {
         event.preventDefault();
@@ -428,7 +428,7 @@ var UsersView = (function (_super) {
             userPane = (React.createElement("main", {className: "mdl-layout__content"}, React.createElement("div", {className: "mdl-list"}, userItems)));
         }
         else {
-            userPane = (React.createElement("div", {className: "mdl-grid"}, React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, React.createElement("h4", null, "no users yet"))));
+            userPane = (React.createElement("div", {className: "mdl-grid"}, React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, React.createElement("h4", null, "no other users are online at this time :("))));
         }
         return (React.createElement("div", {className: "mdl-layout mdl-js-layout mdl-layout--fixed-header"}, React.createElement("header", {className: "mdl-layout__header"}, React.createElement("button", {className: "mdl-layout-icon mdl-button mdl-js-button mdl-button--icon", onClick: function (e) { return _this.onBackButton(e); }}, React.createElement("i", {className: "material-icons"}, "arrow_back")), React.createElement("div", {className: "mdl-layout__header-row"}, React.createElement("span", {className: "mdl-layout-title"}, "users"), React.createElement("div", {className: "mdl-layout-spacer"}), React.createElement("nav", {className: "mdl-navigation mdl-layout--large-screen-only"}, React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout"), React.createElement("form", {id: "logout", action: "/logout", method: "post"}, React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token}))))), userPane));
     };

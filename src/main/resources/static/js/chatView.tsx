@@ -26,13 +26,6 @@ class ChatView extends React.Component<IChatViewProps, IChatViewState> {
       }
     }
 
-    // <div className="mdl-layout__drawer">
-    //   <span className="mdl-layout-title">honiara</span>
-    //   <nav className="mdl-navigation">
-    //     <a className="mdl-navigation__link" href="">logout</a>
-    //   </nav>
-    // </div>
-
     return (
       <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header">
         <header className="mdl-layout__header">

@@ -1,4 +1,4 @@
-package com.ankara.honiara.api.controllers;
+package com.phelmkamp.yama.api.controllers;
 
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.RequestMapping;

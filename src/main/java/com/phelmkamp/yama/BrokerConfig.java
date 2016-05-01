@@ -1,4 +1,4 @@
-package com.ankara.honiara;
+package com.phelmkamp.yama;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,8 +8,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
-import com.ankara.honiara.websocket.WebSocketConnectHandler;
-import com.ankara.honiara.websocket.WebSocketDisconnectHandler;
+import com.phelmkamp.yama.websocket.WebSocketConnectHandler;
+import com.phelmkamp.yama.websocket.WebSocketDisconnectHandler;
 
 import org.springframework.session.ExpiringSession;
 import org.springframework.session.web.socket.config.annotation.AbstractSessionWebSocketMessageBrokerConfigurer;
@@ -25,12 +25,12 @@ public class BrokerConfig<S extends ExpiringSession>
 		registry.enableSimpleBroker("/topic", "/queue");
 		registry.setApplicationDestinationPrefixes("/app", "/topic");
 	}
-	
+
 	@Override
 	protected void configureStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/honiara").withSockJS();
+		registry.addEndpoint("/yama").withSockJS();
 	}
-	
+
 	@Bean
 	public WebSocketConnectHandler webSocketConnectHandler(SimpMessageSendingOperations messagingTemplate) {
 		return new WebSocketConnectHandler(messagingTemplate);

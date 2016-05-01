@@ -1,4 +1,4 @@
-package com.ankara.honiara.api.controllers;
+package com.phelmkamp.yama.api.controllers;
 
 import java.security.Principal;
 
@@ -13,8 +13,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import com.ankara.honiara.api.representations.Convo;
-import com.ankara.honiara.api.representations.Message;
+import com.phelmkamp.yama.api.representations.Convo;
+import com.phelmkamp.yama.api.representations.Message;
 
 @Controller
 public class MessageController {

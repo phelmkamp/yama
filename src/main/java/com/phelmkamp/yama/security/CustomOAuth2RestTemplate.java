@@ -1,4 +1,4 @@
-package com.ankara.honiara.security;
+package com.phelmkamp.yama.security;
 
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoRestTemplateCustomizer;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;

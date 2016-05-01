@@ -1,4 +1,4 @@
-package com.ankara.honiara.security;
+package com.phelmkamp.yama.security;
 
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.security.oauth2.client.DefaultOAuth2RequestAuthenticator;

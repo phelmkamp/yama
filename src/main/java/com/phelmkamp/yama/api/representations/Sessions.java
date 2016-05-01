@@ -1,4 +1,4 @@
-package com.ankara.honiara.api.representations;
+package com.phelmkamp.yama.api.representations;
 
 import java.util.List;
 

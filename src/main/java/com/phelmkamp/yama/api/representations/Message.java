@@ -1,4 +1,4 @@
-package com.ankara.honiara.api.representations;
+package com.phelmkamp.yama.api.representations;
 
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;

@@ -1,11 +1,11 @@
-package com.ankara.honiara.api.controllers;
+package com.phelmkamp.yama.api.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
-import com.ankara.honiara.api.representations.Sessions;
-import com.ankara.honiara.data.SessionRepo;
+import com.phelmkamp.yama.api.representations.Sessions;
+import com.phelmkamp.yama.data.SessionRepo;
 
 @Controller
 public class UserController {

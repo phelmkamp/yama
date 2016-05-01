@@ -15,10 +15,10 @@ var MainView = (function (_super) {
     __extends(MainView, _super);
     function MainView(props) {
         _super.call(this);
-        this.userModel = new userModel_1.UserModel('honiara-users', props.thisUser, props.stompClient);
+        this.userModel = new userModel_1.UserModel('yama-users', props.thisUser, props.stompClient);
         this.userModel.subscribe(this.onUserModelChanged.bind(this));
         this.state = { activeView: constants_1.View.Convos };
-        this.convoModel = new convoModel_1.ConvoModel('honiara-convos', props.stompClient);
+        this.convoModel = new convoModel_1.ConvoModel('yama-convos', props.stompClient);
         this.convoModel.subscribe(this.onConvoModelChanged.bind(this));
     }
     MainView.prototype.componentDidUpdate = function (prevProps, prevState, prevContext) {
@@ -77,7 +77,7 @@ request.send();
 var stompClient;
 var csrf;
 function connect() {
-    var socket = new SockJS('/honiara');
+    var socket = new SockJS('/yama');
     stompClient = Stomp.over(socket);
     csrf = JSON.parse(request.responseText);
     var headers = {};

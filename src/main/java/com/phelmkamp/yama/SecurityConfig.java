@@ -1,4 +1,4 @@
-package com.ankara.honiara;
+package com.phelmkamp.yama;
 
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Bean;
@@ -16,12 +16,12 @@ import org.springframework.session.SessionRepository;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableOAuth2Sso
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
+
 	@Bean
 	public SessionRepository<ExpiringSession> sessionRepository() {
 		return new MapSessionRepository();
 	}
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.frameOptions().sameOrigin()
 				.and()
 			.csrf()
-				.ignoringAntMatchers("/honiara/**")
+				.ignoringAntMatchers("/yama/**")
 				.and()
 			.authorizeRequests()
 				.antMatchers("/resources/**").permitAll()
