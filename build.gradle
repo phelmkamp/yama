@@ -35,25 +35,19 @@ dependencies {
 	compile 'org.springframework.session:spring-session'
 	compile 'org.springframework.security:spring-security-messaging'
 	
-	compile 'org.springframework.data:spring-data-redis'
-	compile 'com.github.kstyrc:embedded-redis:0.6'
-	compile 'org.apache.commons:commons-pool2:2.2'
-	compile 'redis.clients:jedis:2.4.2'
-
-	compile 'org.projectlombok:lombok:1.16.6'
+	compile 'org.apache.commons:commons-lang3:3.4'
+	
+	compile 'org.hibernate:hibernate-validator:5.2.4.Final'
+	
+	compile 'org.jsoup:jsoup:1.9.1'
 	
 	compile 'org.webjars:webjars-locator'
-	compile 'org.webjars:bootstrap:3.2.0'
 	compile 'org.webjars:sockjs-client:1.0.2'
 	compile 'org.webjars:stomp-websocket:2.3.3'
 	compile 'org.webjars:react:0.13.3'
-	compile 'org.webjars:react-bootstrap:0.28.1'
 	compile 'org.webjars.bower:classnames:2.2.0'
-	compile 'org.webjars.bower:director:1.2.8'
-	compile 'org.webjars.npm:todomvc-common:1.0.2'
-	compile 'org.webjars:bootstrap-material-design:0.3.0'
 	
-	runtime 'com.h2database:h2'
+	runtime 'com.h2database:h2:1.4.191'
 }
 
 task wrapper(type: Wrapper) {

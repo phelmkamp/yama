@@ -1,12 +1,18 @@
 package com.ankara.honiara.api.representations;
 
+import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Message {
 
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String sender;
+	@SafeHtml(whitelistType = WhiteListType.RELAXED)
 	private String content;
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	private String convoId;
 
 	@JsonProperty
