@@ -54,7 +54,7 @@ sourceSets {
 	main {
 		resources {
 			include 'application.yml'
-			include 'static/index.html'
+			include 'static/*.html'
 			include 'static/css/base.css'
 			include 'static/js/bundle.js'
 			include 'static/images/logo.png'
