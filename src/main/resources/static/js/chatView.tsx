@@ -89,7 +89,7 @@ class ChatView extends React.Component<IChatViewProps, IChatViewState> {
 
   private onType(event : __React.KeyboardEvent) {
     // event.preventDefault();
-    var val = React.findDOMNode<HTMLInputElement>(this.refs["newField"]).value.trim();
+    var val = ReactDOM.findDOMNode<HTMLInputElement>(this.refs["newField"]).value.trim();
     this.props.convo.content[this.props.thisUser.name] = val;
     this.props.stompClient.send("/app/convos/" + this.props.convo.id, {},
       JSON.stringify(this.props.convo));

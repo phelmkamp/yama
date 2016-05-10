@@ -88,5 +88,5 @@ function onConnect(frame) {
     var thisUsername = frame.headers['user-name'];
     var thisUser = { name: thisUsername, session: null,
         displayName: "you", iconUrl: null };
-    React.render(React.createElement(MainView, {stompClient: stompClient, thisUser: thisUser, csrf: csrf}), document.getElementsByClassName('main')[0]);
+    ReactDOM.render(React.createElement(MainView, {stompClient: stompClient, thisUser: thisUser, csrf: csrf}), document.getElementsByClassName('main')[0]);
 }

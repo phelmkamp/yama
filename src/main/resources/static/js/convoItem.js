@@ -17,7 +17,13 @@ var ConvoItem = (function (_super) {
     };
     ConvoItem.prototype.render = function () {
         var _this = this;
-        return (React.createElement("div", {className: "mdl-list__item", onClick: function (e) { return _this.onSelect(e); }}, React.createElement("span", {className: "mdl-list__item-primary-content"}, React.createElement("i", {className: "material-icons mdl-list__item-avatar"}, "chat"), React.createElement("span", null, this.props.usernames.join(", "))), React.createElement("a", {className: "mdl-list__item-secondary-action", onClick: function (e) { return _this.onDelete(e); }}, React.createElement("i", {className: "material-icons"}, "delete"))));
+        return (React.createElement("div", {className: "mdl-list__item", onClick: function (e) { return _this.onSelect(e); }}, 
+            React.createElement("span", {className: "mdl-list__item-primary-content"}, 
+                React.createElement("i", {className: "material-icons mdl-list__item-avatar"}, "chat"), 
+                React.createElement("span", null, this.props.usernames.join(", "))), 
+            React.createElement("a", {className: "mdl-list__item-secondary-action", onClick: function (e) { return _this.onDelete(e); }}, 
+                React.createElement("i", {className: "material-icons"}, "delete")
+            )));
     };
     ConvoItem.prototype.onSelect = function (event) {
         event.preventDefault();
