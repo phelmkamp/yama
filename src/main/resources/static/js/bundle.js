@@ -119,7 +119,30 @@ var ChatView = (function (_super) {
                 usernames.push(u.displayName);
             }
         }
-        return (React.createElement("div", {className: "mdl-layout mdl-js-layout mdl-layout--fixed-header"}, React.createElement("header", {className: "mdl-layout__header"}, React.createElement("button", {className: "mdl-layout-icon mdl-button mdl-js-button mdl-button--icon", onClick: function (e) { return _this.onBackButton(e); }}, React.createElement("i", {className: "material-icons"}, "arrow_back")), React.createElement("div", {className: "mdl-layout__header-row"}, React.createElement("span", {className: "mdl-layout-title"}, usernames.join(", ")), React.createElement("div", {className: "mdl-layout-spacer"}), React.createElement("nav", {className: "mdl-navigation mdl-layout--large-screen-only"}, React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout"), React.createElement("form", {id: "logout", action: "/logout", method: "post"}, React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token}))))), React.createElement("div", {className: "mdl-grid"}, React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, React.createElement("h4", null, usernames[0]), React.createElement("p", {ref: "response2", className: ""}, this.getContent())), React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, React.createElement("form", {action: "#"}, React.createElement("div", {className: "mdl-textfield mdl-js-textfield mdl-textfield--floating-label"}, React.createElement("label", {htmlFor: "newField", className: "mdl-textfield__label"}, "you"), React.createElement("textarea", {type: "text", className: "mdl-textfield__input", id: "newField", ref: "newField", onKeyUp: function (e) { return _this.onType(e); }, autoFocus: true, rows: 5}, this.props.convo.content[this.props.thisUser.name])))))));
+        return (React.createElement("div", {className: "mdl-layout mdl-js-layout mdl-layout--fixed-header"}, 
+            React.createElement("header", {className: "mdl-layout__header"}, 
+                React.createElement("button", {className: "mdl-layout-icon mdl-button mdl-js-button mdl-button--icon", onClick: function (e) { return _this.onBackButton(e); }}, 
+                    React.createElement("i", {className: "material-icons"}, "arrow_back")
+                ), 
+                React.createElement("div", {className: "mdl-layout__header-row"}, 
+                    React.createElement("span", {className: "mdl-layout-title"}, usernames.join(", ")), 
+                    React.createElement("div", {className: "mdl-layout-spacer"}), 
+                    React.createElement("nav", {className: "mdl-navigation mdl-layout--large-screen-only"}, 
+                        React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout"), 
+                        React.createElement("form", {id: "logout", action: "/logout", method: "post"}, 
+                            React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token})
+                        )))), 
+            React.createElement("div", {className: "mdl-grid"}, 
+                React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, 
+                    React.createElement("h4", null, usernames[0]), 
+                    React.createElement("p", {ref: "response2", className: ""}, this.getContent())), 
+                React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, 
+                    React.createElement("form", {action: "#"}, 
+                        React.createElement("div", {className: "mdl-textfield mdl-js-textfield mdl-textfield--floating-label"}, 
+                            React.createElement("label", {htmlFor: "newField", className: "mdl-textfield__label"}, "you"), 
+                            React.createElement("textarea", {type: "text", className: "mdl-textfield__input", id: "newField", ref: "newField", onKeyUp: function (e) { return _this.onType(e); }, autoFocus: true, rows: 5}, this.props.convo.content[this.props.thisUser.name]))
+                    )
+                ))));
     };
     ChatView.prototype.getContent = function () {
         var content = '';
@@ -182,7 +205,13 @@ var ConvoItem = (function (_super) {
     };
     ConvoItem.prototype.render = function () {
         var _this = this;
-        return (React.createElement("div", {className: "mdl-list__item", onClick: function (e) { return _this.onSelect(e); }}, React.createElement("span", {className: "mdl-list__item-primary-content"}, React.createElement("i", {className: "material-icons mdl-list__item-avatar"}, "chat"), React.createElement("span", null, this.props.usernames.join(", "))), React.createElement("a", {className: "mdl-list__item-secondary-action", onClick: function (e) { return _this.onDelete(e); }}, React.createElement("i", {className: "material-icons"}, "delete"))));
+        return (React.createElement("div", {className: "mdl-list__item ios-tappable", onClick: function (e) { return _this.onSelect(e); }}, 
+            React.createElement("span", {className: "mdl-list__item-primary-content"}, 
+                React.createElement("i", {className: "material-icons mdl-list__item-avatar"}, "chat"), 
+                React.createElement("span", null, this.props.usernames.join(", "))), 
+            React.createElement("a", {className: "mdl-list__item-secondary-action", onClick: function (e) { return _this.onDelete(e); }}, 
+                React.createElement("i", {className: "material-icons"}, "delete")
+            )));
     };
     ConvoItem.prototype.onSelect = function (event) {
         event.preventDefault();
@@ -295,9 +324,35 @@ var ConvosView = (function (_super) {
             convoPane = (React.createElement("div", {className: "mdl-list"}, convoItems));
         }
         else {
-            convoPane = (React.createElement("div", {className: "mdl-grid"}, React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, React.createElement("h4", null, "no active conversations"))));
+            convoPane = (React.createElement("div", {className: "mdl-grid"}, 
+                React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, 
+                    React.createElement("h4", null, "no active conversations")
+                )
+            ));
         }
-        return (React.createElement("div", {className: "mdl-layout mdl-js-layout mdl-layout--fixed-header"}, React.createElement("header", {className: "mdl-layout__header"}, React.createElement("div", {className: "mdl-layout__header-row"}, React.createElement("span", {className: "mdl-layout-title"}, "conversations"), React.createElement("div", {className: "mdl-layout-spacer"}), React.createElement("nav", {className: "mdl-navigation mdl-layout--large-screen-only"}, React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout")))), React.createElement("div", {className: "mdl-layout__drawer"}, React.createElement("span", {className: "mdl-layout-title"}, "yama"), React.createElement("nav", {className: "mdl-navigation"}, React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout"))), convoPane, React.createElement("main", {className: "mdl-layout__content"}, React.createElement("button", {type: "button", onClick: function (e) { return _this.onNewConvoButton(e); }, className: classNames("mdl-button", "mdl-js-button", "mdl-button--fab", "mdl-js-ripple-effect", "mdl-button--colored", "floating-fab")}, React.createElement("i", {className: "material-icons"}, "add"))), React.createElement("form", {id: "logout", action: "/logout", method: "post", type: "hidden"}, React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token}))));
+        return (React.createElement("div", {className: "mdl-layout mdl-js-layout mdl-layout--fixed-header"}, 
+            React.createElement("header", {className: "mdl-layout__header"}, 
+                React.createElement("div", {className: "mdl-layout__header-row"}, 
+                    React.createElement("span", {className: "mdl-layout-title"}, "conversations"), 
+                    React.createElement("div", {className: "mdl-layout-spacer"}), 
+                    React.createElement("nav", {className: "mdl-navigation mdl-layout--large-screen-only"}, 
+                        React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout")
+                    ))
+            ), 
+            React.createElement("div", {className: "mdl-layout__drawer"}, 
+                React.createElement("span", {className: "mdl-layout-title"}, "yama"), 
+                React.createElement("nav", {className: "mdl-navigation"}, 
+                    React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout")
+                )), 
+            convoPane, 
+            React.createElement("main", {className: "mdl-layout__content"}, 
+                React.createElement("button", {type: "button", onClick: function (e) { return _this.onNewConvoButton(e); }, className: classNames("mdl-button", "mdl-js-button", "mdl-button--fab", "mdl-js-ripple-effect", "mdl-button--colored", "floating-fab")}, 
+                    React.createElement("i", {className: "material-icons"}, "add")
+                )
+            ), 
+            React.createElement("form", {id: "logout", action: "/logout", method: "post", type: "hidden"}, 
+                React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token})
+            )));
     };
     ConvosView.prototype.onNewConvoButton = function (event) {
         event.preventDefault();
@@ -340,7 +395,11 @@ var UserItem = (function (_super) {
     };
     UserItem.prototype.render = function () {
         var _this = this;
-        return (React.createElement("div", {className: "mdl-list__item", onClick: function (e) { return _this.handleSelect(e); }}, React.createElement("span", {className: "mdl-list__item-primary-content"}, this.getIcon(), React.createElement("span", null, this.props.user.displayName))));
+        return (React.createElement("div", {className: "mdl-list__item ios-tappable", onClick: function (e) { return _this.handleSelect(e); }}, 
+            React.createElement("span", {className: "mdl-list__item-primary-content"}, 
+                this.getIcon(), 
+                React.createElement("span", null, this.props.user.displayName))
+        ));
     };
     UserItem.prototype.getIcon = function () {
         if (this.props.user.iconUrl) {
@@ -425,12 +484,31 @@ var UsersView = (function (_super) {
             var userItems = users.map(function (user) {
                 return (React.createElement(userItem_1.UserItem, {user: user, onSelect: _this.onUserSelect.bind(_this, user)}));
             });
-            userPane = (React.createElement("main", {className: "mdl-layout__content"}, React.createElement("div", {className: "mdl-list"}, userItems)));
+            userPane = (React.createElement("main", {className: "mdl-layout__content"}, 
+                React.createElement("div", {className: "mdl-list"}, userItems)
+            ));
         }
         else {
-            userPane = (React.createElement("div", {className: "mdl-grid"}, React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, React.createElement("h4", null, "no other users are online at this time :("))));
+            userPane = (React.createElement("div", {className: "mdl-grid"}, 
+                React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, 
+                    React.createElement("h4", null, "no other users are online at this time :(")
+                )
+            ));
         }
-        return (React.createElement("div", {className: "mdl-layout mdl-js-layout mdl-layout--fixed-header"}, React.createElement("header", {className: "mdl-layout__header"}, React.createElement("button", {className: "mdl-layout-icon mdl-button mdl-js-button mdl-button--icon", onClick: function (e) { return _this.onBackButton(e); }}, React.createElement("i", {className: "material-icons"}, "arrow_back")), React.createElement("div", {className: "mdl-layout__header-row"}, React.createElement("span", {className: "mdl-layout-title"}, "users"), React.createElement("div", {className: "mdl-layout-spacer"}), React.createElement("nav", {className: "mdl-navigation mdl-layout--large-screen-only"}, React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout"), React.createElement("form", {id: "logout", action: "/logout", method: "post"}, React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token}))))), userPane));
+        return (React.createElement("div", {className: "mdl-layout mdl-js-layout mdl-layout--fixed-header"}, 
+            React.createElement("header", {className: "mdl-layout__header"}, 
+                React.createElement("button", {className: "mdl-layout-icon mdl-button mdl-js-button mdl-button--icon", onClick: function (e) { return _this.onBackButton(e); }}, 
+                    React.createElement("i", {className: "material-icons"}, "arrow_back")
+                ), 
+                React.createElement("div", {className: "mdl-layout__header-row"}, 
+                    React.createElement("span", {className: "mdl-layout-title"}, "users"), 
+                    React.createElement("div", {className: "mdl-layout-spacer"}), 
+                    React.createElement("nav", {className: "mdl-navigation mdl-layout--large-screen-only"}, 
+                        React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout"), 
+                        React.createElement("form", {id: "logout", action: "/logout", method: "post"}, 
+                            React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token})
+                        )))), 
+            userPane));
     };
     UsersView.prototype.onUserModelChanged = function () {
         this.setState({});

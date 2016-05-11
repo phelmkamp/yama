@@ -5,3 +5,7 @@
   right: 24px;
   z-index: 998;
 }
+
+.ios-tappable {
+  cursor: pointer;
+}

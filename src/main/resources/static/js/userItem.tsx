@@ -26,7 +26,7 @@ class UserItem extends React.Component<IUserItemProps, IUserItemState> {
   public render() {
     return (
       <div
-        className="mdl-list__item"
+        className="mdl-list__item ios-tappable"
         onClick={e => this.handleSelect(e)}>
         <span className="mdl-list__item-primary-content">
           {this.getIcon()}

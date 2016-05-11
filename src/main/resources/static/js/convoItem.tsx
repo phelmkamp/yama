@@ -20,7 +20,7 @@ class ConvoItem extends React.Component<IConvoItemProps, IConvoItemState> {
   public render() {
     return (
       <div
-        className="mdl-list__item"
+        className="mdl-list__item ios-tappable"
         onClick={e => this.onSelect(e)}>
           <span className="mdl-list__item-primary-content">
             <i className="material-icons mdl-list__item-avatar">chat</i>
