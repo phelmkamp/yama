@@ -44,7 +44,7 @@ dependencies {
 	compile 'org.webjars:webjars-locator'
 	compile 'org.webjars:sockjs-client:1.0.2'
 	compile 'org.webjars:stomp-websocket:2.3.3'
-	compile 'org.webjars:react:0.14.8'
+	compile 'org.webjars:react:0.13.3'
 	compile 'org.webjars.bower:classnames:2.2.0'
 
 	runtime 'com.h2database:h2:1.4.191'

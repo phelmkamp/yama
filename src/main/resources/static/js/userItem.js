@@ -17,11 +17,7 @@ var UserItem = (function (_super) {
     };
     UserItem.prototype.render = function () {
         var _this = this;
-        return (React.createElement("div", {className: "mdl-list__item", onClick: function (e) { return _this.handleSelect(e); }}, 
-            React.createElement("span", {className: "mdl-list__item-primary-content"}, 
-                this.getIcon(), 
-                React.createElement("span", null, this.props.user.displayName))
-        ));
+        return (React.createElement("div", {className: "mdl-list__item", onClick: function (e) { return _this.handleSelect(e); }}, React.createElement("span", {className: "mdl-list__item-primary-content"}, this.getIcon(), React.createElement("span", null, this.props.user.displayName))));
     };
     UserItem.prototype.getIcon = function () {
         if (this.props.user.iconUrl) {
