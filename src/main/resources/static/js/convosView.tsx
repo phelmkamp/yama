@@ -61,7 +61,7 @@ class ConvosView extends React.Component<IConvosViewProps, IConvosViewState> {
     } else {
       convoPane = (
         <div className="mdl-grid">
-          <div className="mdl-cell mdl-cell--12-col">
+          <div className="mdl-cell mdl-cell--12-col mdl-typography--text-center">
             <h4>no active conversations</h4>
           </div>
         </div>
@@ -87,10 +87,13 @@ class ConvosView extends React.Component<IConvosViewProps, IConvosViewState> {
             <a className="mdl-navigation__link"
               href=""
               onClick={(e) => this.onLogout(e)}>logout</a>
+            <span className="mdl-navigation__link">
+              &copy; 2016 phil helmkamp
+            </span>
   		    </nav>
   		  </div>
-        {convoPane}
   		  <main className="mdl-layout__content">
+          {convoPane}
           <button
             type="button"
             onClick={e => this.onNewConvoButton(e)}

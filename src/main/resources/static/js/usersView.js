@@ -26,13 +26,11 @@ var UsersView = (function (_super) {
             var userItems = users.map(function (user) {
                 return (React.createElement(userItem_1.UserItem, {user: user, onSelect: _this.onUserSelect.bind(_this, user)}));
             });
-            userPane = (React.createElement("main", {className: "mdl-layout__content"}, 
-                React.createElement("div", {className: "mdl-list"}, userItems)
-            ));
+            userPane = (React.createElement("div", {className: "mdl-list"}, userItems));
         }
         else {
             userPane = (React.createElement("div", {className: "mdl-grid"}, 
-                React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, 
+                React.createElement("div", {className: "mdl-cell mdl-cell--12-col mdl-typography--text-center"}, 
                     React.createElement("h4", null, "no other users are online at this time :(")
                 )
             ));
@@ -50,7 +48,7 @@ var UsersView = (function (_super) {
                         React.createElement("form", {id: "logout", action: "/logout", method: "post"}, 
                             React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token})
                         )))), 
-            userPane));
+            React.createElement("main", {className: "mdl-layout__content"}, userPane)));
     };
     UsersView.prototype.onUserModelChanged = function () {
         this.setState({});

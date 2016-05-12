@@ -37,16 +37,14 @@ class UsersView extends React.Component<IUsersViewProps, IUsersViewState> {
       });
 
       userPane = (
-        <main className="mdl-layout__content">
-          <div className="mdl-list">
-            {userItems}
-          </div>
-        </main>
+        <div className="mdl-list">
+          {userItems}
+        </div>
       );
     } else {
       userPane = (
         <div className="mdl-grid">
-          <div className="mdl-cell mdl-cell--12-col">
+          <div className="mdl-cell mdl-cell--12-col mdl-typography--text-center">
             <h4>no other users are online at this time :(</h4>
           </div>
         </div>
@@ -76,7 +74,9 @@ class UsersView extends React.Component<IUsersViewProps, IUsersViewState> {
             </nav>
   		    </div>
   		  </header>
-        {userPane}
+        <main className="mdl-layout__content">
+          {userPane}
+        </main>
       </div>
     );
   }

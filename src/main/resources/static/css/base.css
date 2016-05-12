@@ -9,3 +9,7 @@
 .ios-tappable {
   cursor: pointer;
 }
+
+.full-width {
+  width: 100%;
+}

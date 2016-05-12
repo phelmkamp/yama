@@ -132,17 +132,19 @@ var ChatView = (function (_super) {
                         React.createElement("form", {id: "logout", action: "/logout", method: "post"}, 
                             React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token})
                         )))), 
-            React.createElement("div", {className: "mdl-grid"}, 
-                React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, 
-                    React.createElement("h4", null, usernames[0]), 
-                    React.createElement("p", {ref: "response2", className: ""}, this.getContent())), 
-                React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, 
-                    React.createElement("form", {action: "#"}, 
-                        React.createElement("div", {className: "mdl-textfield mdl-js-textfield mdl-textfield--floating-label"}, 
-                            React.createElement("label", {htmlFor: "newField", className: "mdl-textfield__label"}, "you"), 
-                            React.createElement("textarea", {type: "text", className: "mdl-textfield__input", id: "newField", ref: "newField", onKeyUp: function (e) { return _this.onType(e); }, autoFocus: true, rows: 5}, this.props.convo.content[this.props.thisUser.name]))
-                    )
-                ))));
+            React.createElement("main", {className: "mdl-layout__content"}, 
+                React.createElement("div", {className: "mdl-grid"}, 
+                    React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, 
+                        React.createElement("h4", null, usernames[0]), 
+                        React.createElement("p", {ref: "response2"}, this.getContent())), 
+                    React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, 
+                        React.createElement("form", {action: "#"}, 
+                            React.createElement("div", {className: "mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-width"}, 
+                                React.createElement("label", {htmlFor: "newField", className: "mdl-textfield__label"}, "you"), 
+                                React.createElement("textarea", {type: "text", className: "mdl-textfield__input", id: "newField", ref: "newField", onKeyUp: function (e) { return _this.onType(e); }, autoFocus: true, rows: 5}, this.props.convo.content[this.props.thisUser.name]))
+                        )
+                    ))
+            )));
     };
     ChatView.prototype.getContent = function () {
         var content = '';
@@ -325,7 +327,7 @@ var ConvosView = (function (_super) {
         }
         else {
             convoPane = (React.createElement("div", {className: "mdl-grid"}, 
-                React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, 
+                React.createElement("div", {className: "mdl-cell mdl-cell--12-col mdl-typography--text-center"}, 
                     React.createElement("h4", null, "no active conversations")
                 )
             ));
@@ -342,14 +344,13 @@ var ConvosView = (function (_super) {
             React.createElement("div", {className: "mdl-layout__drawer"}, 
                 React.createElement("span", {className: "mdl-layout-title"}, "yama"), 
                 React.createElement("nav", {className: "mdl-navigation"}, 
-                    React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout")
-                )), 
-            convoPane, 
+                    React.createElement("a", {className: "mdl-navigation__link", href: "", onClick: function (e) { return _this.onLogout(e); }}, "logout"), 
+                    React.createElement("span", {className: "mdl-navigation__link"}, "© 2016 phil helmkamp"))), 
             React.createElement("main", {className: "mdl-layout__content"}, 
+                convoPane, 
                 React.createElement("button", {type: "button", onClick: function (e) { return _this.onNewConvoButton(e); }, className: classNames("mdl-button", "mdl-js-button", "mdl-button--fab", "mdl-js-ripple-effect", "mdl-button--colored", "floating-fab")}, 
                     React.createElement("i", {className: "material-icons"}, "add")
-                )
-            ), 
+                )), 
             React.createElement("form", {id: "logout", action: "/logout", method: "post", type: "hidden"}, 
                 React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token})
             )));
@@ -484,13 +485,11 @@ var UsersView = (function (_super) {
             var userItems = users.map(function (user) {
                 return (React.createElement(userItem_1.UserItem, {user: user, onSelect: _this.onUserSelect.bind(_this, user)}));
             });
-            userPane = (React.createElement("main", {className: "mdl-layout__content"}, 
-                React.createElement("div", {className: "mdl-list"}, userItems)
-            ));
+            userPane = (React.createElement("div", {className: "mdl-list"}, userItems));
         }
         else {
             userPane = (React.createElement("div", {className: "mdl-grid"}, 
-                React.createElement("div", {className: "mdl-cell mdl-cell--12-col"}, 
+                React.createElement("div", {className: "mdl-cell mdl-cell--12-col mdl-typography--text-center"}, 
                     React.createElement("h4", null, "no other users are online at this time :(")
                 )
             ));
@@ -508,7 +507,7 @@ var UsersView = (function (_super) {
                         React.createElement("form", {id: "logout", action: "/logout", method: "post"}, 
                             React.createElement("input", {type: "hidden", name: this.props.csrf.parameterName, value: this.props.csrf.token})
                         )))), 
-            userPane));
+            React.createElement("main", {className: "mdl-layout__content"}, userPane)));
     };
     UsersView.prototype.onUserModelChanged = function () {
         this.setState({});

@@ -49,29 +49,31 @@ class ChatView extends React.Component<IChatViewProps, IChatViewState> {
             </nav>
           </div>
         </header>
-        <div className="mdl-grid">
-          <div className="mdl-cell mdl-cell--12-col">
-            <h4>{usernames[0]}</h4>
-            <p ref="response2" className="">{this.getContent()}</p>
+        <main className="mdl-layout__content">
+          <div className="mdl-grid">
+            <div className="mdl-cell mdl-cell--12-col">
+              <h4>{usernames[0]}</h4>
+              <p ref="response2">{this.getContent()}</p>
+            </div>
+            <div className="mdl-cell mdl-cell--12-col">
+              <form action="#">
+                <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label full-width">
+                    <label htmlFor="newField" className="mdl-textfield__label">you</label>
+                    <textarea
+                      type="text"
+                      className="mdl-textfield__input"
+                      id="newField"
+                      ref="newField"
+                      onKeyUp={ e => this.onType(e) }
+                      autoFocus={true}
+                      rows={5}>
+                      {this.props.convo.content[this.props.thisUser.name]}
+                    </textarea>
+                </div>
+              </form>
+            </div>
           </div>
-          <div className="mdl-cell mdl-cell--12-col">
-            <form action="#">
-              <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <label htmlFor="newField" className="mdl-textfield__label">you</label>
-                  <textarea
-                    type="text"
-                    className="mdl-textfield__input"
-                    id="newField"
-                    ref="newField"
-                    onKeyUp={ e => this.onType(e) }
-                    autoFocus={true}
-                    rows={5}>
-                    {this.props.convo.content[this.props.thisUser.name]}
-                  </textarea>
-              </div>
-            </form>
-          </div>
-        </div>
+        </main>
       </div>
     );
   }
